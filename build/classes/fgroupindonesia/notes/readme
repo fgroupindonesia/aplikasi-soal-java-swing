@@ -1,0 +1,17 @@
+
+// aplikasi soal 
+// @2023, created by FgroupIndonesia
+// versi 1.0a desktop
+
+// deskripsi:
+// bertujuan untuk mempermudah orang tua 
+// dalam melakukan edukasi IT terhadap anak
+// yang akan menggunakan komputer
+
+// fitur unggulan:
+// - dapat membatasi program lain yang sedang berjalan
+// - dapat mengunci / membuka (in-front) seperti blocking tampilan
+// - (future) dapat berinteraksi atas input yang diberikan (text to audio)
+// - tersedia embed audio (indonesia) narrator
+// - (future) bisa update bahasa (extract file audio dan UI language ke temp location)
+// - tersedia History log
