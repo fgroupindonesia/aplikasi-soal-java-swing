@@ -1,9 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fgroupindonesia.frames.management;
+
+
+import fgroupindonesia.data.Student;
+import fgroupindonesia.frames.MainFrame;
+import fgroupindonesia.helper.DBConnection;
+import fgroupindonesia.helper.TableRenderer;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +18,19 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
      */
     public StudentManagementFrame() {
         initComponents();
+        db = new DBConnection();
+        db.connect();
+        list = db.select_student_all();
+        new TableRenderer().render_student(tableDataManagement, list);
+
+    }
+
+    DBConnection db;
+    ArrayList<Student> list;
+    MainFrame mframe;
+
+    public void setMainFrameReference(MainFrame mf) {
+        mframe = mf;
     }
 
     /**
@@ -29,7 +44,7 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tableDataManagement = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -40,30 +55,37 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tableDataManagement.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "#", "Nama", "TTL", "Kelas"
+                "#", "Id", "Nama", "TTL", "Kelas"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setMinWidth(45);
-            jTable1.getColumnModel().getColumn(0).setPreferredWidth(45);
-            jTable1.getColumnModel().getColumn(0).setMaxWidth(45);
+        jScrollPane1.setViewportView(tableDataManagement);
+        if (tableDataManagement.getColumnModel().getColumnCount() > 0) {
+            tableDataManagement.getColumnModel().getColumn(0).setMinWidth(45);
+            tableDataManagement.getColumnModel().getColumn(0).setPreferredWidth(45);
+            tableDataManagement.getColumnModel().getColumn(0).setMaxWidth(45);
+            tableDataManagement.getColumnModel().getColumn(1).setMinWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -113,9 +135,9 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel labelAdd;
     private javax.swing.JLabel labelDelete;
     private javax.swing.JLabel labelEdit;
+    private javax.swing.JTable tableDataManagement;
     // End of variables declaration//GEN-END:variables
 }

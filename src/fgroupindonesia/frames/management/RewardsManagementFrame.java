@@ -1,7 +1,7 @@
 package fgroupindonesia.frames.management;
 
-import fgroupindonesia.data.Category;
-import fgroupindonesia.data.Question;
+import fgroupindonesia.data.AnswerQuestion;
+import fgroupindonesia.data.Rewards;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
 import fgroupindonesia.helper.TableRenderer;
@@ -11,22 +11,20 @@ import java.util.ArrayList;
  *
  * @author asus
  */
-public class QuestionManagementFrame extends javax.swing.JInternalFrame {
+public class RewardsManagementFrame extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form CategoryManagementFrame
      */
-    public QuestionManagementFrame() {
+    public RewardsManagementFrame() {
         initComponents();
         db = new DBConnection();
         db.connect();
-        list = db.select_question_all();
-        new TableRenderer().render_question(tableDataManagement, list);
-   
+        list = db.select_rewards_all();
+        new TableRenderer().render_rewards(tableDataManagement, list);
     }
-
     DBConnection db;
-    ArrayList<Question> list;
+    ArrayList<Rewards> list;
     MainFrame mframe;
 
     public void setMainFrameReference(MainFrame mf) {
@@ -60,15 +58,22 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "#", "Nama Soal", "Jumlah Pertanyaan", "Kategori", "Tanggal"
+                "#", "Id", "Nama", "Filename"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tableDataManagement);
@@ -76,6 +81,9 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
             tableDataManagement.getColumnModel().getColumn(0).setMinWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setPreferredWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setMaxWidth(45);
+            tableDataManagement.getColumnModel().getColumn(1).setMinWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -88,7 +96,7 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
         jPanel1.setLayout(new java.awt.GridLayout(1, 2));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Manejemen Soal");
+        jLabel1.setText("Manejemen Imbalan");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
         jPanel1.add(jLabel1);
 

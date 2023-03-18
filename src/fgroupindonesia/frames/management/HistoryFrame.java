@@ -1,9 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fgroupindonesia.frames.management;
+
+import fgroupindonesia.frames.MainFrame;
 
 /**
  *
@@ -16,6 +13,12 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
      */
     public HistoryFrame() {
         initComponents();
+    }
+
+    MainFrame mframe;
+
+    public void setMainFrameReference(MainFrame mf) {
+        mframe = mf;
     }
 
     /**

@@ -1,4 +1,4 @@
 git add .
-git commit -m "adding queries For CRUD query except UPDATE"
+git commit -m "completed all queries For CRUD in all entities."
 git push origin main
 git gc --prune

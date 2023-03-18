@@ -1,7 +1,6 @@
 package fgroupindonesia.frames.management;
 
-import fgroupindonesia.data.Category;
-import fgroupindonesia.data.Question;
+import fgroupindonesia.data.AnswerQuestion;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
 import fgroupindonesia.helper.TableRenderer;
@@ -9,28 +8,28 @@ import java.util.ArrayList;
 
 /**
  *
- * @author asus
+ * @author fgroupindonesia
  */
-public class QuestionManagementFrame extends javax.swing.JInternalFrame {
+public class AnswerQuestionManagementFrame extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form CategoryManagementFrame
      */
-    public QuestionManagementFrame() {
+    
+    DBConnection db;
+    ArrayList<AnswerQuestion> list;
+    MainFrame mframe;
+    
+    public void setMainFrameReference(MainFrame mf){
+        mframe = mf;
+    }
+    
+    public AnswerQuestionManagementFrame() {
         initComponents();
         db = new DBConnection();
         db.connect();
-        list = db.select_question_all();
-        new TableRenderer().render_question(tableDataManagement, list);
-   
-    }
-
-    DBConnection db;
-    ArrayList<Question> list;
-    MainFrame mframe;
-
-    public void setMainFrameReference(MainFrame mf) {
-        mframe = mf;
+        list = db.select_answer_question_all();
+        new TableRenderer().render_answer_question(tableDataManagement, list);
     }
 
     /**
@@ -45,7 +44,7 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDataManagement = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
+        labelTotalData = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -60,15 +59,22 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "#", "Nama Soal", "Jumlah Pertanyaan", "Kategori", "Tanggal"
+                "#", "Id", "Nama Student", "Nama Soal", "Nomor Soal", "Jawaban Soal", "Status", "Tanggal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, false, true, true, true, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         jScrollPane1.setViewportView(tableDataManagement);
@@ -76,19 +82,22 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
             tableDataManagement.getColumnModel().getColumn(0).setMinWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setPreferredWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setMaxWidth(45);
+            tableDataManagement.getColumnModel().getColumn(1).setMinWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("Total Data : x");
-        jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_END);
+        labelTotalData.setText("Total Data : x");
+        jPanel2.add(labelTotalData, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
         jPanel1.setLayout(new java.awt.GridLayout(1, 2));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel1.setText("Manejemen Soal");
+        jLabel1.setText("Manejemen Jawaban Soal");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 20, 1, 1));
         jPanel1.add(jLabel1);
 
@@ -120,7 +129,6 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -128,6 +136,7 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelAdd;
     private javax.swing.JLabel labelDelete;
     private javax.swing.JLabel labelEdit;
+    private javax.swing.JLabel labelTotalData;
     private javax.swing.JTable tableDataManagement;
     // End of variables declaration//GEN-END:variables
 }

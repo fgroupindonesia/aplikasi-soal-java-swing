@@ -2,6 +2,12 @@ package fgroupindonesia.frames;
 
 import fgroupindonesia.data.History;
 import fgroupindonesia.data.User;
+import fgroupindonesia.frames.management.AnswerQuestionManagementFrame;
+import fgroupindonesia.frames.management.CategoryManagementFrame;
+import fgroupindonesia.frames.management.HistoryFrame;
+import fgroupindonesia.frames.management.QuestionManagementFrame;
+import fgroupindonesia.frames.management.RewardsManagementFrame;
+import fgroupindonesia.frames.management.StudentManagementFrame;
 import fgroupindonesia.helper.LoginHistory;
 import java.awt.Dimension;
 import javax.swing.JDesktopPane;
@@ -20,7 +26,6 @@ public class MainFrame extends javax.swing.JFrame {
     JDesktopPane desktop;
     User.Type akses;
     LoginHistory loghist = new LoginHistory();
-    
 
     public void setAccess(String nama, User.Type jenis) {
         akses = jenis;
@@ -52,7 +57,13 @@ public class MainFrame extends javax.swing.JFrame {
         loginMenu = new javax.swing.JMenuItem();
         updateLanguageMenu = new javax.swing.JMenuItem();
         aktifitasMenu = new javax.swing.JMenu();
-        loginHistoryMenu = new javax.swing.JMenuItem();
+        historyMenu = new javax.swing.JMenuItem();
+        managementMenu = new javax.swing.JMenu();
+        categoryManagementMenu = new javax.swing.JMenuItem();
+        questionManagementMenu = new javax.swing.JMenuItem();
+        answerQuestionManagementMenu = new javax.swing.JMenuItem();
+        studentManagementMenu = new javax.swing.JMenuItem();
+        rewardsManagementMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -68,16 +79,70 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu.add(loginMenu);
 
         updateLanguageMenu.setText("Update Bahasa");
+        updateLanguageMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateLanguageMenuActionPerformed(evt);
+            }
+        });
         fileMenu.add(updateLanguageMenu);
 
         jMenuBar1.add(fileMenu);
 
         aktifitasMenu.setText("Aktifitas");
 
-        loginHistoryMenu.setText("Login History");
-        aktifitasMenu.add(loginHistoryMenu);
+        historyMenu.setText("History");
+        historyMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                historyMenuActionPerformed(evt);
+            }
+        });
+        aktifitasMenu.add(historyMenu);
 
         jMenuBar1.add(aktifitasMenu);
+
+        managementMenu.setText("Manajemen");
+
+        categoryManagementMenu.setText("Kategori");
+        categoryManagementMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                categoryManagementMenuActionPerformed(evt);
+            }
+        });
+        managementMenu.add(categoryManagementMenu);
+
+        questionManagementMenu.setText("Soal");
+        questionManagementMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                questionManagementMenuActionPerformed(evt);
+            }
+        });
+        managementMenu.add(questionManagementMenu);
+
+        answerQuestionManagementMenu.setText("Jawaban");
+        answerQuestionManagementMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                answerQuestionManagementMenuActionPerformed(evt);
+            }
+        });
+        managementMenu.add(answerQuestionManagementMenu);
+
+        studentManagementMenu.setText("Siswa");
+        studentManagementMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                studentManagementMenuActionPerformed(evt);
+            }
+        });
+        managementMenu.add(studentManagementMenu);
+
+        rewardsManagementMenu.setText("Imbalan");
+        rewardsManagementMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rewardsManagementMenuActionPerformed(evt);
+            }
+        });
+        managementMenu.add(rewardsManagementMenu);
+
+        jMenuBar1.add(managementMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -100,25 +165,94 @@ public class MainFrame extends javax.swing.JFrame {
 
         if (loginMenu.getText().contains("Login")) {
             LoginFrame frame = new LoginFrame();
-            frame.setVisible(true);
-            frame.setClosable(true);
-            frame.setMaximizable(false);
+            deployDesktop(frame);
             frame.setMainFrameReference(this);
 
-            setCenterInternal(frame);
-            desktop.add(frame);
-
-            try {
-                frame.setSelected(true);
-            } catch (Exception e) {
-
-            }
         } else {
             logout();
         }
 
 
     }//GEN-LAST:event_loginMenuActionPerformed
+
+    private void categoryManagementMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_categoryManagementMenuActionPerformed
+        displayManagementCategory();
+    }//GEN-LAST:event_categoryManagementMenuActionPerformed
+
+    private void questionManagementMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionManagementMenuActionPerformed
+        displayManagementQuestion();
+    }//GEN-LAST:event_questionManagementMenuActionPerformed
+
+    private void answerQuestionManagementMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_answerQuestionManagementMenuActionPerformed
+        displayManagementAnswerQuestion();
+    }//GEN-LAST:event_answerQuestionManagementMenuActionPerformed
+
+    private void updateLanguageMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateLanguageMenuActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_updateLanguageMenuActionPerformed
+
+    private void historyMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_historyMenuActionPerformed
+        displayHistory();
+    }//GEN-LAST:event_historyMenuActionPerformed
+
+    private void studentManagementMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_studentManagementMenuActionPerformed
+        displayManagementStudent();
+    }//GEN-LAST:event_studentManagementMenuActionPerformed
+
+    private void rewardsManagementMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rewardsManagementMenuActionPerformed
+        displayManagementRewards();
+    }//GEN-LAST:event_rewardsManagementMenuActionPerformed
+
+    private void displayHistory() {
+        HistoryFrame frame = new HistoryFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    private void displayManagementStudent() {
+        StudentManagementFrame frame = new StudentManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+    
+    private void displayManagementRewards() {
+        RewardsManagementFrame frame = new RewardsManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    private void displayManagementCategory() {
+        CategoryManagementFrame frame = new CategoryManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    private void displayManagementAnswerQuestion() {
+        AnswerQuestionManagementFrame frame = new AnswerQuestionManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    private void displayManagementQuestion() {
+        QuestionManagementFrame frame = new QuestionManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    private void deployDesktop(JInternalFrame frame) {
+        frame.setVisible(true);
+        frame.setClosable(true);
+        frame.setMaximizable(false);
+
+        setCenterInternal(frame);
+        desktop.add(frame);
+
+        try {
+            frame.setSelected(true);
+        } catch (Exception e) {
+
+        }
+    }
 
     private void setCenterInternal(JInternalFrame frame) {
         Dimension desktopSize = desktop.getSize();
@@ -169,10 +303,16 @@ public class MainFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu aktifitasMenu;
+    private javax.swing.JMenuItem answerQuestionManagementMenu;
+    private javax.swing.JMenuItem categoryManagementMenu;
     private javax.swing.JMenu fileMenu;
+    private javax.swing.JMenuItem historyMenu;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem loginHistoryMenu;
     private javax.swing.JMenuItem loginMenu;
+    private javax.swing.JMenu managementMenu;
+    private javax.swing.JMenuItem questionManagementMenu;
+    private javax.swing.JMenuItem rewardsManagementMenu;
+    private javax.swing.JMenuItem studentManagementMenu;
     private javax.swing.JMenuItem updateLanguageMenu;
     // End of variables declaration//GEN-END:variables
 }

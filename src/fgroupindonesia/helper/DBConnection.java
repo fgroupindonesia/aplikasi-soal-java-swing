@@ -161,9 +161,23 @@ public class DBConnection {
         
         AnswerQuestion item = konektor.select_answer_question_specific(3);
         System.out.println("Didapatlah QA item "  + item.getNama_student());*/
+        Student n = new Student();
+        n.setId(7);
+        n.setNama("Shidqi");
+        n.setKelas("SMP");
+        //n.setNama("Shidqi");
+        n.setTtl("Bandung, 12 Nov 2000");
 
-        System.out.println("Coba delete " + konektor.delete_category_specific(4));
+        konektor.delete_student_specific(6);
+        //konektor.update_student(n);
 
+        n.setNama("saha");
+        n.setKelas("TK");
+        n.setTtl("Jakarta, 12 Januari 2000");
+
+        konektor.update_student(n);
+
+        //System.out.println("Coba delete " + konektor.delete_category_specific(4));
         //QueryBuilder qbs = new QueryBuilder();
         //qbs.setSkippedColumn("id");
         //qbs.setConditional(new Conditional("id", 3));
@@ -171,6 +185,170 @@ public class DBConnection {
     }
 
     QueryBuilder qb = new QueryBuilder();
+
+    public boolean update_answer_question(AnswerQuestion data) {
+        qb.setConditional(new Conditional("id", data.getId()));
+        qb.setSkippedColumn("id");
+
+        String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_ANSWER_QUESTION, AnswerQuestion.class);
+
+        boolean sukses = false;
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            pstmt.setString(1, data.getNama_student());
+            pstmt.setString(2, data.getNama_soal());
+            pstmt.setInt(3, data.getNomor_soal());
+            pstmt.setString(4, data.getJawaban_soal());
+            pstmt.setString(5, data.getStatus());
+            pstmt.setString(6, data.getTanggal());
+
+            // update 
+            int baris = pstmt.executeUpdate();
+            if (baris != 0) {
+                sukses = true;
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at update_answer_question() " + e.getMessage());
+        }
+
+        return sukses;
+    }
+
+    public boolean update_category(Category data) {
+        qb.setConditional(new Conditional("id", data.getId()));
+        qb.setSkippedColumn("id");
+
+        String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_CATEGORY, Category.class);
+
+        boolean sukses = false;
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            pstmt.setString(1, data.getNama());
+            pstmt.setString(2, data.getTanggal());
+
+            // update 
+            int baris = pstmt.executeUpdate();
+            if (baris != 0) {
+                sukses = true;
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at update_category() " + e.getMessage());
+        }
+
+        return sukses;
+    }
+
+    public boolean update_question(Question data) {
+        qb.setConditional(new Conditional("id", data.getId()));
+        qb.setSkippedColumn("id");
+
+        String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_QUESTION, Question.class);
+
+        boolean sukses = false;
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            pstmt.setString(1, data.getNama());
+            pstmt.setInt(2, data.getJumlah_pertanyaan());
+            pstmt.setString(3, data.getKategori());
+            pstmt.setInt(4, data.getLimit_waktu());
+            pstmt.setString(5, data.getIsi_soal());
+            pstmt.setString(6, data.getTanggal());
+
+            // update 
+            int baris = pstmt.executeUpdate();
+            if (baris != 0) {
+                sukses = true;
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at update_question() " + e.getMessage());
+        }
+
+        return sukses;
+    }
+
+    public boolean update_rewards(Rewards data) {
+        qb.setConditional(new Conditional("id", data.getId()));
+        qb.setSkippedColumn("id");
+
+        String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_REWARDS, Rewards.class);
+
+        boolean sukses = false;
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            pstmt.setString(1, data.getNama());
+            pstmt.setString(2, data.getFilename());
+
+            // update 
+            int baris = pstmt.executeUpdate();
+            if (baris != 0) {
+                sukses = true;
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at update_rewards() " + e.getMessage());
+        }
+
+        return sukses;
+    }
+
+    public boolean update_student(Student data) {
+        qb.setConditional(new Conditional("id", data.getId()));
+        qb.setSkippedColumn("id");
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_STUDENT, Student.class);
+
+        boolean sukses = false;
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            pstmt.setString(1, data.getNama());
+            pstmt.setString(2, data.getKelas());
+            pstmt.setString(3, data.getTtl());
+
+            // update 
+            int baris = pstmt.executeUpdate();
+            if (baris != 0) {
+                sukses = true;
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at update_student() " + e.getMessage());
+        }
+
+        return sukses;
+    }
 
     private boolean delete_specific(String table_name, int id) {
         qb.setConditional(new Conditional("id", id));
