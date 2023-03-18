@@ -2,11 +2,16 @@ package fgroupindonesia.frames;
 
 import fgroupindonesia.data.History;
 import fgroupindonesia.data.User;
+import fgroupindonesia.frames.management.AnswerQuestionFrame;
 import fgroupindonesia.frames.management.AnswerQuestionManagementFrame;
+import fgroupindonesia.frames.management.CategoryFrame;
 import fgroupindonesia.frames.management.CategoryManagementFrame;
 import fgroupindonesia.frames.management.HistoryFrame;
+import fgroupindonesia.frames.management.QuestionFrame;
 import fgroupindonesia.frames.management.QuestionManagementFrame;
+import fgroupindonesia.frames.management.RewardsFrame;
 import fgroupindonesia.frames.management.RewardsManagementFrame;
+import fgroupindonesia.frames.management.StudentFrame;
 import fgroupindonesia.frames.management.StudentManagementFrame;
 import fgroupindonesia.helper.LoginHistory;
 import java.awt.Dimension;
@@ -209,12 +214,14 @@ public class MainFrame extends javax.swing.JFrame {
         frame.setMainFrameReference(this);
     }
 
+    StudentManagementFrame stm_frame;
+
     private void displayManagementStudent() {
-        StudentManagementFrame frame = new StudentManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        stm_frame = new StudentManagementFrame();
+        deployDesktop(stm_frame);
+        stm_frame.setMainFrameReference(this);
     }
-    
+
     private void displayManagementRewards() {
         RewardsManagementFrame frame = new RewardsManagementFrame();
         deployDesktop(frame);
@@ -239,12 +246,43 @@ public class MainFrame extends javax.swing.JFrame {
         frame.setMainFrameReference(this);
     }
 
+    public void displayStudentForm() {
+        StudentFrame frame = new StudentFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayRewardsForm() {
+        RewardsFrame frame = new RewardsFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayQuestionForm() {
+        QuestionFrame frame = new QuestionFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayCategoryForm() {
+        CategoryFrame frame = new CategoryFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayAnswerQuestionForm() {
+        AnswerQuestionFrame frame = new AnswerQuestionFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
     private void deployDesktop(JInternalFrame frame) {
         frame.setVisible(true);
         frame.setClosable(true);
         frame.setMaximizable(false);
 
         setCenterInternal(frame);
+
         desktop.add(frame);
 
         try {
@@ -252,6 +290,10 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
 
         }
+    }
+
+    public void refresh_studentManagement() {
+        stm_frame.refresh();
     }
 
     private void setCenterInternal(JInternalFrame frame) {

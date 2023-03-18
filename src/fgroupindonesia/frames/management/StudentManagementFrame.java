@@ -1,6 +1,5 @@
 package fgroupindonesia.frames.management;
 
-
 import fgroupindonesia.data.Student;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
@@ -19,10 +18,14 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
     public StudentManagementFrame() {
         initComponents();
         db = new DBConnection();
+        refresh();
+    }
+
+    public void refresh() {
         db.connect();
         list = db.select_student_all();
         new TableRenderer().render_student(tableDataManagement, list);
-
+        labelTotalData.setText("Total Data : " + list.size());
     }
 
     DBConnection db;
@@ -45,7 +48,7 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDataManagement = new javax.swing.JTable();
-        jLabel2 = new javax.swing.JLabel();
+        labelTotalData = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -90,8 +93,8 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setText("Total Data : x");
-        jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_END);
+        labelTotalData.setText("Total Data : x");
+        jPanel2.add(labelTotalData, java.awt.BorderLayout.PAGE_END);
 
         getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -106,6 +109,11 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         labelAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/add.png"))); // NOI18N
         labelAdd.setText("Tambah");
         labelAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelAddMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelAdd);
 
         labelEdit.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -118,6 +126,11 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         labelDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/close.png"))); // NOI18N
         labelDelete.setText("Hapus");
         labelDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelDeleteMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelDelete);
 
         jPanel1.add(jPanel3);
@@ -127,10 +140,23 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void labelAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelAddMouseClicked
+
+        mframe.displayStudentForm();
+        //this.dispose();
+
+
+    }//GEN-LAST:event_labelAddMouseClicked
+
+    private void labelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDeleteMouseClicked
+        
+        
+        
+    }//GEN-LAST:event_labelDeleteMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -138,6 +164,7 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelAdd;
     private javax.swing.JLabel labelDelete;
     private javax.swing.JLabel labelEdit;
+    private javax.swing.JLabel labelTotalData;
     private javax.swing.JTable tableDataManagement;
     // End of variables declaration//GEN-END:variables
 }
