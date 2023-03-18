@@ -10,12 +10,23 @@ import java.lang.reflect.Field;
 public class QueryBuilder {
 
     Conditional condt;
+    String skippedColumn;
     Object dataObject;
+
+    public void setSkippedColumn(String name) {
+        skippedColumn = name;
+    }
+
+    public String getSkippedColumn() {
+        return skippedColumn;
+    }
 
     public static enum Mode {
         INSERT,
         UPDATE,
-        DELETE
+        DELETE,
+        SELECT_ALL,
+        SELECT_SPECIFIC
     }
 
     public void setConditional(Conditional con) {
@@ -62,6 +73,10 @@ public class QueryBuilder {
             query = "UPDATE " + table_name + " " + getColumn_forUpdate(ob) + " " + getConditional();
         } else if (ops == Mode.DELETE) {
             query = "DELETE FROM " + table_name + " " + getConditional();
+        } else if (ops == Mode.SELECT_ALL) {
+            query = "SELECT * FROM " + table_name;
+        }else if (ops == Mode.SELECT_SPECIFIC){
+            query = "SELECT * FROM " + table_name + " " + getConditional();
         }
 
         return query;
@@ -78,8 +93,16 @@ public class QueryBuilder {
         stb.append("SET ");
         Field[] fields = yourClass.getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
-            stb.append(fields[i].getName());
-            stb.append("=");
+
+            if (!skippedColumn.equalsIgnoreCase(fields[i].getName())) {
+
+                stb.append(fields[i].getName());
+                stb.append("=?");
+
+                if (i < fields.length - 1) {
+                    stb.append(",");
+                }
+            }
 
         }
 

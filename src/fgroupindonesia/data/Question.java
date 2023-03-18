@@ -4,7 +4,7 @@ package fgroupindonesia.data;
  *
  * @author asus
  */
-public class Soal {
+public class Question {
 
     private int id;
     private String nama;
