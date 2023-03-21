@@ -1,4 +1,4 @@
-package fgroupindonesia.frames.management;
+package fgroupindonesia.frames;
 
 import fgroupindonesia.data.History;
 import fgroupindonesia.frames.MainFrame;
@@ -56,10 +56,11 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDataManagement = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        buttonSearch = new javax.swing.JButton();
+        buttonClearAll = new javax.swing.JButton();
         labelTotalData = new javax.swing.JLabel();
 
+        setTitle("Riwayat");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -106,13 +107,13 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(403, 50));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/search.png"))); // NOI18N
-        jButton1.setText("Search");
-        jPanel1.add(jButton1);
+        buttonSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/search.png"))); // NOI18N
+        buttonSearch.setText("Search");
+        jPanel1.add(buttonSearch);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/clear.png"))); // NOI18N
-        jButton2.setText("Clear All");
-        jPanel1.add(jButton2);
+        buttonClearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/clear.png"))); // NOI18N
+        buttonClearAll.setText("Clear All");
+        jPanel1.add(buttonClearAll);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
 
@@ -129,8 +130,8 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton buttonClearAll;
+    private javax.swing.JButton buttonSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel labelTotalData;

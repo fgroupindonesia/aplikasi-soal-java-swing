@@ -6,7 +6,6 @@ import fgroupindonesia.frames.management.AnswerQuestionFrame;
 import fgroupindonesia.frames.management.AnswerQuestionManagementFrame;
 import fgroupindonesia.frames.management.CategoryFrame;
 import fgroupindonesia.frames.management.CategoryManagementFrame;
-import fgroupindonesia.frames.management.HistoryFrame;
 import fgroupindonesia.frames.management.QuestionFrame;
 import fgroupindonesia.frames.management.QuestionManagementFrame;
 import fgroupindonesia.frames.management.RewardsFrame;
@@ -14,7 +13,8 @@ import fgroupindonesia.frames.management.RewardsManagementFrame;
 import fgroupindonesia.frames.management.StudentFrame;
 import fgroupindonesia.frames.management.StudentManagementFrame;
 import fgroupindonesia.helper.CustomJDesktopPane;
-import fgroupindonesia.helper.LoginHistory;
+import fgroupindonesia.helper.DBConnection;
+
 import fgroupindonesia.helper.SystemPath;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -36,14 +36,31 @@ public class MainFrame extends javax.swing.JFrame {
      */
     JDesktopPane desktop;
     User.Type akses;
-    LoginHistory loghist = new LoginHistory();
+    User dataUser;
+    History dataHistory;
+    DBConnection db;
     BufferedImage myBackground;
 
+    private void openMenuAccess(boolean b) {
+        aktifitasMenu.setEnabled(b);
+
+        if (akses != User.Type.kids) {
+            managementMenu.setEnabled(b);
+        }
+    }
+
     public void setAccess(String nama, User.Type jenis) {
+        dataUser = new User();
+        dataUser.setUsername(nama);
+
         akses = jenis;
+        dataHistory = new History(nama, jenis);
+        dataHistory.setDescription("login");
 
         loginMenu.setText("Logout dari (" + jenis + ")");
-        loghist.add(new History(nama, jenis));
+
+        db.insert_history(dataHistory);
+        openMenuAccess(true);
     }
 
     private void updateImageIcon() {
@@ -55,6 +72,11 @@ public class MainFrame extends javax.swing.JFrame {
         updateImageIcon();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultLookAndFeelDecorated(true);
+
+        // first time
+        db = new DBConnection();
+        openMenuAccess(false);
+
         //desktop = new JDesktopPane();
         try {
             myBackground = ImageIO.read(new File(SystemPath.getCompletePath("background.jpg")));
@@ -85,6 +107,9 @@ public class MainFrame extends javax.swing.JFrame {
         exitMenu = new javax.swing.JMenuItem();
         aktifitasMenu = new javax.swing.JMenu();
         historyMenu = new javax.swing.JMenuItem();
+        checkRewardsMenu = new javax.swing.JMenuItem();
+        startQuestionMenu = new javax.swing.JMenuItem();
+        requestAdditionalQuestionMenu = new javax.swing.JMenuItem();
         managementMenu = new javax.swing.JMenu();
         categoryManagementMenu = new javax.swing.JMenuItem();
         questionManagementMenu = new javax.swing.JMenuItem();
@@ -133,13 +158,22 @@ public class MainFrame extends javax.swing.JFrame {
         aktifitasMenu.setText("Aktifitas");
 
         historyMenu.setMnemonic('H');
-        historyMenu.setText("History");
+        historyMenu.setText("Check Riwayat");
         historyMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 historyMenuActionPerformed(evt);
             }
         });
         aktifitasMenu.add(historyMenu);
+
+        checkRewardsMenu.setText("Melihat Imbalan");
+        aktifitasMenu.add(checkRewardsMenu);
+
+        startQuestionMenu.setText("Mulai Mengerjakan Soal");
+        aktifitasMenu.add(startQuestionMenu);
+
+        requestAdditionalQuestionMenu.setText("Minta Soal Tambahan");
+        aktifitasMenu.add(requestAdditionalQuestionMenu);
 
         jMenuBar1.add(aktifitasMenu);
 
@@ -371,6 +405,12 @@ public class MainFrame extends javax.swing.JFrame {
         frame.setMainFrameReference(this);
     }
 
+    public void displayMenuActivity() {
+        MenuActivityFrame frame = new MenuActivityFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
     private void deployDesktop(JInternalFrame frame) {
         frame.setVisible(true);
         frame.setClosable(true);
@@ -383,7 +423,8 @@ public class MainFrame extends javax.swing.JFrame {
         try {
             frame.setSelected(true);
         } catch (Exception e) {
-
+            e.printStackTrace();
+            System.out.println("Error " + e.getMessage());
         }
     }
 
@@ -414,8 +455,12 @@ public class MainFrame extends javax.swing.JFrame {
                 (desktopSize.height - jInternalFrameSize.height) / 2);
     }
 
-    private void logout() {
+    public void logout() {
         loginMenu.setText("Login");
+
+        dataHistory.setDescription("logout");
+        db.insert_history(dataHistory);
+        openMenuAccess(false);
     }
 
     /**
@@ -458,6 +503,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu aktifitasMenu;
     private javax.swing.JMenuItem answerQuestionManagementMenu;
     private javax.swing.JMenuItem categoryManagementMenu;
+    private javax.swing.JMenuItem checkRewardsMenu;
     private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem historyMenu;
@@ -466,7 +512,9 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenuItem loginMenu;
     private javax.swing.JMenu managementMenu;
     private javax.swing.JMenuItem questionManagementMenu;
+    private javax.swing.JMenuItem requestAdditionalQuestionMenu;
     private javax.swing.JMenuItem rewardsManagementMenu;
+    private javax.swing.JMenuItem startQuestionMenu;
     private javax.swing.JMenuItem studentManagementMenu;
     private javax.swing.JMenuItem updateLanguageMenu;
     // End of variables declaration//GEN-END:variables

@@ -47,6 +47,7 @@ public class MenuManagementFrame extends javax.swing.JInternalFrame {
         buttonHistory = new javax.swing.JButton();
         jLabel14 = new javax.swing.JLabel();
 
+        setTitle("Menu Management");
         getContentPane().setLayout(new java.awt.GridLayout(2, 3));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 15, 20, 15));

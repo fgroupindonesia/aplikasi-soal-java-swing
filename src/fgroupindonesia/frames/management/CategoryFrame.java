@@ -46,6 +46,8 @@ public class CategoryFrame extends javax.swing.JInternalFrame {
         jLabel1 = new javax.swing.JLabel();
         textfieldCategoryName = new javax.swing.JTextField();
 
+        setTitle("Kategori");
+
         buttonSave.setText("Simpan");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

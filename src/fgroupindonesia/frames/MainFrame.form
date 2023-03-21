@@ -50,11 +50,26 @@
             <MenuItem class="javax.swing.JMenuItem" name="historyMenu">
               <Properties>
                 <Property name="mnemonic" type="int" value="72"/>
-                <Property name="text" type="java.lang.String" value="History"/>
+                <Property name="text" type="java.lang.String" value="Check Riwayat"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="historyMenuActionPerformed"/>
               </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="checkRewardsMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Melihat Imbalan"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="startQuestionMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Mulai Mengerjakan Soal"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="requestAdditionalQuestionMenu">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Minta Soal Tambahan"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

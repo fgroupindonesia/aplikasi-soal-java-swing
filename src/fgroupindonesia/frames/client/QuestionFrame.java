@@ -55,6 +55,8 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         labelNomorSoal = new javax.swing.JLabel();
         labelTotalSoal = new javax.swing.JLabel();
 
+        setTitle("Mulai Mengerjakan Soal");
+
         jPanel1.setPreferredSize(new java.awt.Dimension(394, 50));
 
         buttonSoalSebelumnya.setText("Sebelumnya <<");

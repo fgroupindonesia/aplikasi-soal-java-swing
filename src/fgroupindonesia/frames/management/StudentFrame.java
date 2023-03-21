@@ -51,6 +51,7 @@ public class StudentFrame extends javax.swing.JInternalFrame {
         buttonSimpan = new javax.swing.JButton();
 
         setResizable(true);
+        setTitle("Pelajar");
 
         jPanel1.setLayout(new java.awt.GridLayout(6, 1));
 

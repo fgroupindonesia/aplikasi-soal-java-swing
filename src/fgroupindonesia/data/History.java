@@ -14,8 +14,11 @@ public class History {
         this.setUsername(us);
         this.setJenis(jns);
 
+        generateDate();
+    }
+    
+    private void generateDate(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
         this.setTanggal(sdf.format(new Date()));
     }
     
@@ -88,6 +91,8 @@ public class History {
      */
     public void setDescription(String description) {
         this.description = description;
+        
+        this.generateDate();
     }
 
     /**

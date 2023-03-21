@@ -90,6 +90,8 @@ public class AnswerQuestionFrame extends javax.swing.JInternalFrame {
         jLabel5 = new javax.swing.JLabel();
         comboboxStatus = new javax.swing.JComboBox<>();
 
+        setTitle("Answer Question Frame");
+
         buttonSave.setText("Simpan");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

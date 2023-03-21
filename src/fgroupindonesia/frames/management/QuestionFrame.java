@@ -91,6 +91,8 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         buttonKembali = new javax.swing.JButton();
         buttonSelanjutnya = new javax.swing.JButton();
 
+        setTitle("Soal ");
+
         jPanel2.setLayout(new java.awt.CardLayout());
 
         panelConfigSoal.setLayout(new java.awt.GridLayout(8, 1));

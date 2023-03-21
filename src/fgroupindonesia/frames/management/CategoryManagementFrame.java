@@ -55,6 +55,7 @@ public class CategoryManagementFrame extends javax.swing.JInternalFrame {
         labelEdit = new javax.swing.JLabel();
         labelDelete = new javax.swing.JLabel();
 
+        setTitle("Manajemen Kategori");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }

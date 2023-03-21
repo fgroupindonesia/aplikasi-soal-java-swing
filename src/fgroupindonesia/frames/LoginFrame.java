@@ -66,6 +66,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         textfieldNamaKamu = new javax.swing.JTextField();
         buttonMulai = new javax.swing.JButton();
 
+        setTitle("Login");
         getContentPane().setLayout(new java.awt.CardLayout());
 
         panelUserType.setLayout(new java.awt.GridLayout(3, 1));
@@ -205,8 +206,13 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
     private void textfieldNamaKamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldNamaKamuActionPerformed
 
-        setAccess(textfieldNamaKamu.getText(), User.Type.kids);
-
+        if (textfieldNamaKamu.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "input nama yang bener ya!");
+        } else {
+            setAccess(textfieldNamaKamu.getText(), User.Type.kids);
+            mainFrame.displayMenuActivity();
+            this.dispose();
+        }
     }//GEN-LAST:event_textfieldNamaKamuActionPerformed
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
@@ -232,7 +238,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         String pass = textfieldPasswordParent.getText();
 
         System.out.println("username " + username + " dan pass " + pass);
-        
+
         if (db.verify_user(username, pass)) {
             setAccess(textfieldParentUsername.getText(), User.Type.parents);
 

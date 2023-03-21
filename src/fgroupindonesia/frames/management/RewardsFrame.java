@@ -72,6 +72,8 @@ public class RewardsFrame extends javax.swing.JInternalFrame {
         labelFilename = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
 
+        setTitle("Imbalan");
+
         buttonSimpan.setText("Simpan");
         buttonSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
