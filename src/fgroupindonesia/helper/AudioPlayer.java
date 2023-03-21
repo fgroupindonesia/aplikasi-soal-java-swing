@@ -10,10 +10,28 @@ package fgroupindonesia.helper;
  */
 public class AudioPlayer {
     
+    enum Mode {
+        OFFLINE, 
+        ONLINE
+    }
+    
+    Mode opsi;
+    
+    public void setMode(Mode opsina){
+        opsi = opsina;
+    }
+    
     public void readWelcome(String username){
+     
+        if(opsi != Mode.OFFLINE){
         // pass the url call
-        
+     
         // read the file
+        
+        } else {
+            
+        }
+               
         
         
     }

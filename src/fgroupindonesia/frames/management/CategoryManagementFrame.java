@@ -12,23 +12,27 @@ import java.util.ArrayList;
  */
 public class CategoryManagementFrame extends javax.swing.JInternalFrame {
 
-    /**
-     * Creates new form CategoryManagementFrame
-     */
+    public void refresh() {
+        db.connect();
+        list = db.select_category_all();
+        tableRender = new TableRenderer();
+        tableRender.render_category(tableDataManagement, list);
+        labelTotalData.setText("Total Data : " + list.size());
+    }
+
+    TableRenderer tableRender;
     DBConnection db;
     ArrayList<Category> list;
     MainFrame mframe;
-    
-    public void setMainFrameReference(MainFrame mf){
+
+    public void setMainFrameReference(MainFrame mf) {
         mframe = mf;
     }
-    
+
     public CategoryManagementFrame() {
         initComponents();
         db = new DBConnection();
-        db.connect();
-        list = db.select_category_all();
-        new TableRenderer().render_category(tableDataManagement, list);
+        refresh();
     }
 
     /**
@@ -50,6 +54,24 @@ public class CategoryManagementFrame extends javax.swing.JInternalFrame {
         labelAdd = new javax.swing.JLabel();
         labelEdit = new javax.swing.JLabel();
         labelDelete = new javax.swing.JLabel();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -104,18 +126,33 @@ public class CategoryManagementFrame extends javax.swing.JInternalFrame {
         labelAdd.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/add.png"))); // NOI18N
         labelAdd.setText("Tambah");
         labelAdd.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelAdd.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelAddMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelAdd);
 
         labelEdit.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labelEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/edit.png"))); // NOI18N
         labelEdit.setText("Edit");
         labelEdit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelEditMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelEdit);
 
         labelDelete.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labelDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/close.png"))); // NOI18N
         labelDelete.setText("Hapus");
         labelDelete.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelDeleteMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelDelete);
 
         jPanel1.add(jPanel3);
@@ -124,6 +161,42 @@ public class CategoryManagementFrame extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void labelAddMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelAddMouseClicked
+
+        mframe.displayCategoryForm();
+
+    }//GEN-LAST:event_labelAddMouseClicked
+
+    private void labelEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEditMouseClicked
+
+        int val = tableRender.getCheckedData(tableDataManagement, 1);
+        if (val != TableRenderer.DATA_NOT_AVAILABLE) {
+            mframe.displayCategoryForm(val);
+        }
+
+
+    }//GEN-LAST:event_labelEditMouseClicked
+
+    private void labelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDeleteMouseClicked
+
+        ArrayList<Integer> dataFound = tableRender.getAllCheckedData(tableDataManagement, 1);
+
+        if (!dataFound.isEmpty()) {
+            for (Integer val : dataFound) {
+                db.delete_category_specific(val);
+            }
+
+            mframe.refresh_categoryManagement();
+        }
+
+    }//GEN-LAST:event_labelDeleteMouseClicked
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+
+         mframe.displayMenuManagement();
+         
+    }//GEN-LAST:event_formInternalFrameClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

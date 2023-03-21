@@ -24,10 +24,12 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
     public void refresh() {
         db.connect();
         list = db.select_student_all();
-        new TableRenderer().render_student(tableDataManagement, list);
+        tableRender = new TableRenderer();
+        tableRender.render_student(tableDataManagement, list);
         labelTotalData.setText("Total Data : " + list.size());
     }
 
+    TableRenderer tableRender;
     DBConnection db;
     ArrayList<Student> list;
     MainFrame mframe;
@@ -55,6 +57,24 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         labelAdd = new javax.swing.JLabel();
         labelEdit = new javax.swing.JLabel();
         labelDelete = new javax.swing.JLabel();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel2.setLayout(new java.awt.BorderLayout());
 
@@ -120,6 +140,11 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
         labelEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/edit.png"))); // NOI18N
         labelEdit.setText("Edit");
         labelEdit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        labelEdit.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                labelEditMouseClicked(evt);
+            }
+        });
         jPanel3.add(labelEdit);
 
         labelDelete.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -149,10 +174,32 @@ public class StudentManagementFrame extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_labelAddMouseClicked
 
     private void labelDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDeleteMouseClicked
-        
-        
-        
+
+        ArrayList<Integer> dataFound = tableRender.getAllCheckedData(tableDataManagement, 1);
+
+        if (!dataFound.isEmpty()) {
+            for (Integer val : dataFound) {
+                db.delete_student_specific(val);
+            }
+
+            mframe.refresh_studentManagement();
+        }
+
     }//GEN-LAST:event_labelDeleteMouseClicked
+
+    private void labelEditMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelEditMouseClicked
+        int val = tableRender.getCheckedData(tableDataManagement, 1);
+        if (val != TableRenderer.DATA_NOT_AVAILABLE) {
+            mframe.displayStudentForm(val);
+        }
+
+    }//GEN-LAST:event_labelEditMouseClicked
+
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+
+         mframe.displayMenuManagement();
+        
+    }//GEN-LAST:event_formInternalFrameClosed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,6 +1,11 @@
 package fgroupindonesia.frames.management;
 
+import com.google.gson.Gson;
+import fgroupindonesia.data.Category;
+import fgroupindonesia.data.Question;
 import fgroupindonesia.frames.MainFrame;
+import fgroupindonesia.helper.DBConnection;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,12 +18,44 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
      */
     public QuestionFrame() {
         initComponents();
+        db = new DBConnection();
+        renderKategori();
+    }
+    
+    private void renderKategori(){
+       ArrayList <Category> data =  db.select_category_all();
+       comboboxKategori.removeAll();
+       for(Category ct : data ){
+           comboboxKategori.addItem(ct.getNama());
+       }
     }
 
     MainFrame mframe;
+    Question data;
+    DBConnection db;
+    String isiSoal; // this will be json format
+    
 
     public void setMainFrameReference(MainFrame mf) {
         mframe = mf;
+    }
+
+    public void setEditMode(int id) {
+        data = db.select_question_specific(id);
+
+        textfieldNamaSoal.setText(data.getNama());
+        spinnerJumlahPertanyaan.setValue(data.getJumlah_pertanyaan());
+        comboboxKategori.setSelectedItem(data.getKategori());
+        comboboxLimitWaktu.setSelectedItem(data.getLimit_waktu());
+    }
+    
+    public void obtainFormValues() {
+        
+        data.setJumlah_pertanyaan((Integer)spinnerJumlahPertanyaan.getValue());
+        data.setNama(textfieldNamaSoal.getText());
+        data.setKategori(comboboxKategori.getSelectedItem().toString());
+        data.setLimit_waktu((Integer)comboboxLimitWaktu.getSelectedItem());
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -28,13 +65,13 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jPanel2 = new javax.swing.JPanel();
         panelConfigSoal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        textfieldNamaSoal = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        jSpinner1 = new javax.swing.JSpinner();
+        spinnerJumlahPertanyaan = new javax.swing.JSpinner();
         jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        comboboxKategori = new javax.swing.JComboBox<>();
         jLabel4 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        comboboxLimitWaktu = new javax.swing.JComboBox<>();
         panelEditSoal = new javax.swing.JPanel();
         panelModelSoal = new javax.swing.JPanel();
         panelModelSoal1 = new javax.swing.JPanel();
@@ -60,23 +97,22 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Nama Soal : ");
         panelConfigSoal.add(jLabel1);
-        panelConfigSoal.add(jTextField1);
+        panelConfigSoal.add(textfieldNamaSoal);
 
         jLabel2.setText("Jumlah Pertanyaan :");
         panelConfigSoal.add(jLabel2);
-        panelConfigSoal.add(jSpinner1);
+        panelConfigSoal.add(spinnerJumlahPertanyaan);
 
         jLabel3.setText("Kategori : ");
         panelConfigSoal.add(jLabel3);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        panelConfigSoal.add(jComboBox1);
+        panelConfigSoal.add(comboboxKategori);
 
         jLabel4.setText("Limit Waktu : (Menit)");
         panelConfigSoal.add(jLabel4);
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "15", "20", "25", "30" }));
-        panelConfigSoal.add(jComboBox2);
+        comboboxLimitWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "15", "20", "25", "30" }));
+        panelConfigSoal.add(comboboxLimitWaktu);
 
         jPanel2.add(panelConfigSoal, "card2");
 
@@ -154,7 +190,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jLabel5.setText("Model Soal : ");
         jPanel5.add(jLabel5);
 
-        comboboxModelSoal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Model 1", "Model 2", "Model 3", "Model 4" }));
+        comboboxModelSoal.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Model 1" }));
         jPanel5.add(comboboxModelSoal);
 
         jPanel4.add(jPanel5);
@@ -169,6 +205,11 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jPanel1.add(buttonKembali);
 
         buttonSelanjutnya.setText(">> Selanjutnya");
+        buttonSelanjutnya.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSelanjutnyaActionPerformed(evt);
+            }
+        });
         jPanel1.add(buttonSelanjutnya);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -176,13 +217,28 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonSelanjutnyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelanjutnyaActionPerformed
+
+        if (data != null) {
+            // coming from editing mode
+            renderQuestionData();
+        } else {
+            // coming from new data
+        }
+
+    }//GEN-LAST:event_buttonSelanjutnyaActionPerformed
+
+    private void renderQuestionData() {
+        data.getIsi_soal();
+        Gson dataGson = new Gson();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonKembali;
     private javax.swing.JButton buttonSelanjutnya;
+    private javax.swing.JComboBox<String> comboboxKategori;
+    private javax.swing.JComboBox<String> comboboxLimitWaktu;
     private javax.swing.JComboBox<String> comboboxModelSoal;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -196,15 +252,15 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JSpinner jSpinner1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel labelNomorSoal;
     private javax.swing.JPanel panelConfigSoal;
     private javax.swing.JPanel panelEditSoal;
     private javax.swing.JPanel panelModelSoal;
     private javax.swing.JPanel panelModelSoal1;
     private javax.swing.JPanel panelModelSoal2;
+    private javax.swing.JSpinner spinnerJumlahPertanyaan;
     private javax.swing.JTable tableJawabanPGSoal;
     private javax.swing.JTextArea textareaPertanyaanSoal;
+    private javax.swing.JTextField textfieldNamaSoal;
     // End of variables declaration//GEN-END:variables
 }

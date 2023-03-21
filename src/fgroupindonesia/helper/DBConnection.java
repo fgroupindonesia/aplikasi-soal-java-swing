@@ -3,9 +3,11 @@ package fgroupindonesia.helper;
 import fgroupindonesia.data.AnswerQuestion;
 import fgroupindonesia.data.Category;
 import fgroupindonesia.data.Conditional;
+import fgroupindonesia.data.History;
 import fgroupindonesia.data.Rewards;
 import fgroupindonesia.data.Question;
 import fgroupindonesia.data.Student;
+import fgroupindonesia.data.User;
 import fgroupindonesia.helper.QueryBuilder.Mode;
 import java.sql.Statement;
 import java.sql.Connection;
@@ -13,7 +15,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -55,6 +59,12 @@ public class DBConnection {
         } catch (SQLException ex) {
             System.out.println("Error at disconnect() " + ex.getMessage());
         }
+    }
+
+    public static String getDateNow() {
+        Date n = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.format(n);
     }
 
     public static void main(String[] args) {
@@ -180,14 +190,14 @@ public class DBConnection {
         //System.out.println("Coba delete " + konektor.delete_category_specific(4));
         //QueryBuilder qbs = new QueryBuilder();
         //qbs.setSkippedColumn("id");
-        //qbs.setConditional(new Conditional("id", 3));
+        //qbs.addConditional(new Conditional("id", 3));
         //System.out.println("testing " + qbs.generate(Mode.UPDATE, DBTableDefinition.TABLE_REWARDS, Rewards.class));
     }
 
     QueryBuilder qb = new QueryBuilder();
 
     public boolean update_answer_question(AnswerQuestion data) {
-        qb.setConditional(new Conditional("id", data.getId()));
+        qb.addConditional(new Conditional("id", data.getId()));
         qb.setSkippedColumn("id");
 
         String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_ANSWER_QUESTION, AnswerQuestion.class);
@@ -213,6 +223,7 @@ public class DBConnection {
                 sukses = true;
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at update_answer_question() " + e.getMessage());
@@ -222,7 +233,7 @@ public class DBConnection {
     }
 
     public boolean update_category(Category data) {
-        qb.setConditional(new Conditional("id", data.getId()));
+        qb.addConditional(new Conditional("id", data.getId()));
         qb.setSkippedColumn("id");
 
         String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_CATEGORY, Category.class);
@@ -244,6 +255,7 @@ public class DBConnection {
                 sukses = true;
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at update_category() " + e.getMessage());
@@ -253,7 +265,7 @@ public class DBConnection {
     }
 
     public boolean update_question(Question data) {
-        qb.setConditional(new Conditional("id", data.getId()));
+        qb.addConditional(new Conditional("id", data.getId()));
         qb.setSkippedColumn("id");
 
         String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_QUESTION, Question.class);
@@ -279,6 +291,7 @@ public class DBConnection {
                 sukses = true;
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at update_question() " + e.getMessage());
@@ -288,7 +301,7 @@ public class DBConnection {
     }
 
     public boolean update_rewards(Rewards data) {
-        qb.setConditional(new Conditional("id", data.getId()));
+        qb.addConditional(new Conditional("id", data.getId()));
         qb.setSkippedColumn("id");
 
         String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_REWARDS, Rewards.class);
@@ -310,6 +323,7 @@ public class DBConnection {
                 sukses = true;
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at update_rewards() " + e.getMessage());
@@ -319,7 +333,7 @@ public class DBConnection {
     }
 
     public boolean update_student(Student data) {
-        qb.setConditional(new Conditional("id", data.getId()));
+        qb.addConditional(new Conditional("id", data.getId()));
         qb.setSkippedColumn("id");
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.UPDATE, DBTableDefinition.TABLE_STUDENT, Student.class);
@@ -342,6 +356,7 @@ public class DBConnection {
                 sukses = true;
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at update_student() " + e.getMessage());
@@ -351,7 +366,7 @@ public class DBConnection {
     }
 
     private boolean delete_specific(String table_name, int id) {
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         String sql = qb.generate(Mode.DELETE, table_name, null);
         boolean succeed = false;
 
@@ -367,15 +382,53 @@ public class DBConnection {
             // execute the delete statement
             int rowKena = pstmt.executeUpdate();
 
-            this.disconnect();
             if (rowKena != 0) {
                 succeed = true;
             }
+
+            qb.clearAllConditions();
+            this.disconnect();
+
         } catch (Exception e) {
             System.out.println("Error at delete_specific() " + e.getMessage());
         }
 
         return succeed;
+    }
+
+    private boolean delete_all(String table_name) {
+
+        String sql = qb.generate(Mode.DELETE, table_name, null);
+        boolean succeed = false;
+
+        System.out.println(sql);
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // set the corresponding param
+            //pstmt.setInt(1, id);
+            // execute the delete statement
+            int rowKena = pstmt.executeUpdate();
+
+            if (rowKena != 0) {
+                succeed = true;
+            }
+
+            qb.clearAllConditions();
+            this.disconnect();
+
+        } catch (Exception e) {
+            System.out.println("Error at delete_all() " + e.getMessage());
+        }
+
+        return succeed;
+    }
+
+    public boolean delete_history_all() {
+        return this.delete_all(DBTableDefinition.TABLE_HISTORY);
     }
 
     public boolean delete_student_specific(int id) {
@@ -398,11 +451,45 @@ public class DBConnection {
         return this.delete_specific(DBTableDefinition.TABLE_QUESTION, id);
     }
 
+    public boolean verify_user(String username, String pass) {
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        qb.addConditional(new Conditional("username", username));
+        qb.addConditional(new Conditional("pass", pass));
+        String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_USER, User.class);
+
+        System.out.println("sqlnya " + sql);
+
+        boolean fakta = false;
+
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+
+                fakta = true;
+                break;
+
+            }
+
+            qb.clearAllConditions();
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at verify_user() " + e.getMessage());
+        }
+
+        return fakta;
+    }
+
     public AnswerQuestion select_answer_question_specific(int id) {
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         String sql = qb.generate(Mode.SELECT_ALL, DBTableDefinition.TABLE_ANSWER_QUESTION, null);
         AnswerQuestion item = new AnswerQuestion();
+
         try {
             this.connect();
 
@@ -422,6 +509,7 @@ public class DBConnection {
 
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_answer_question_specific() " + e.getMessage());
@@ -463,7 +551,7 @@ public class DBConnection {
     }
 
     public Category select_category_specific(int id) {
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_CATEGORY, null);
         Category item = new Category();
@@ -482,6 +570,7 @@ public class DBConnection {
 
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_category_specific() " + e.getMessage());
@@ -519,7 +608,7 @@ public class DBConnection {
     }
 
     public Question select_question_specific(int id) {
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_QUESTION, null);
         Question item = new Question();
@@ -543,6 +632,7 @@ public class DBConnection {
 
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_question_specific() " + e.getMessage());
@@ -584,7 +674,7 @@ public class DBConnection {
     }
 
     public Student select_student_specific(int id) {
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_STUDENT, null);
         Student item = new Student();
@@ -605,6 +695,7 @@ public class DBConnection {
 
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_student_specific() " + e.getMessage());
@@ -642,9 +733,45 @@ public class DBConnection {
         return result;
     }
 
+    public ArrayList<History> select_history_all() {
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.SELECT_ALL, DBTableDefinition.TABLE_HISTORY, null);
+        ArrayList<History> result = new ArrayList<History>();
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+                History item = new History();
+                item.setId(rs.getInt("id"));
+                item.setUsername(rs.getString("username"));
+
+                if (rs.getString("jenis").equalsIgnoreCase("kids")) {
+                    item.setJenis(User.Type.kids);
+                } else {
+                    item.setJenis(User.Type.parents);
+                }
+
+                item.setTanggal(rs.getString("tanggal"));
+                item.setDescription(rs.getString("description"));
+
+                result.add(item);
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at select_student_all() " + e.getMessage());
+        }
+
+        return result;
+    }
+
     public Rewards select_rewards_specific(int id) {
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
-        qb.setConditional(new Conditional("id", id));
+        qb.addConditional(new Conditional("id", id));
         String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_REWARDS, null);
         Rewards item = new Rewards();
         try {
@@ -662,6 +789,7 @@ public class DBConnection {
 
             }
 
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_rewards_specific() " + e.getMessage());
@@ -696,6 +824,28 @@ public class DBConnection {
         }
 
         return result;
+    }
+
+    public void insert_history(History data) {
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.INSERT, DBTableDefinition.TABLE_HISTORY, History.class);
+
+        try {
+            this.connect();
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setNull(1, data.getId());
+            pstmt.setString(2, data.getUsername());
+            pstmt.setString(3, data.getJenis().toString());
+            pstmt.setString(4, data.getTanggal());
+            pstmt.setString(5, data.getDescription());
+
+            pstmt.executeUpdate();
+
+            this.disconnect();
+        } catch (SQLException e) {
+            System.out.println("Error at insert_history() " + e.getMessage());
+        }
     }
 
     public void insert_rewards(Rewards data) {

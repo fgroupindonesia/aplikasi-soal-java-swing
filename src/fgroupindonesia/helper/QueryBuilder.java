@@ -2,6 +2,7 @@ package fgroupindonesia.helper;
 
 import fgroupindonesia.data.Conditional;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 
 /**
  *
@@ -9,9 +10,17 @@ import java.lang.reflect.Field;
  */
 public class QueryBuilder {
 
-    Conditional condt;
+    ArrayList<Conditional> conditionals;
     String skippedColumn;
     Object dataObject;
+    
+    public void clearAllConditions(){
+        conditionals.clear();
+    }
+
+    public QueryBuilder() {
+        conditionals = new ArrayList<Conditional>();
+    }
 
     public void setSkippedColumn(String name) {
         skippedColumn = name;
@@ -29,8 +38,8 @@ public class QueryBuilder {
         SELECT_SPECIFIC
     }
 
-    public void setConditional(Conditional con) {
-        condt = con;
+    public void addConditional(Conditional con) {
+        conditionals.add(con);
     }
 
     public String getValueSafe(String val) {
@@ -47,14 +56,21 @@ public class QueryBuilder {
     }
 
     private String getConditionalQuery() {
-        StringBuilder stb = null;
+        StringBuilder stb = new StringBuilder();
 
-        if (condt != null) {
-            stb = new StringBuilder();
-            stb.append(condt.getColumn());
-            stb.append("=");
-            stb.append(getValueSafe(condt.getValue()));
-
+        for (int i =0; i < conditionals.size(); i ++) {
+            Conditional condt = conditionals.get(i);
+            if (condt != null) {
+                
+                stb.append(condt.getColumn());
+                stb.append("=");
+                stb.append(getValueSafe(condt.getValue()));
+            
+                if(i<conditionals.size()-1){
+                    stb.append(" AND ");
+                }
+            
+            }
         }
 
         return stb.toString();
@@ -75,7 +91,7 @@ public class QueryBuilder {
             query = "DELETE FROM " + table_name + " " + getConditional();
         } else if (ops == Mode.SELECT_ALL) {
             query = "SELECT * FROM " + table_name;
-        }else if (ops == Mode.SELECT_SPECIFIC){
+        } else if (ops == Mode.SELECT_SPECIFIC) {
             query = "SELECT * FROM " + table_name + " " + getConditional();
         }
 

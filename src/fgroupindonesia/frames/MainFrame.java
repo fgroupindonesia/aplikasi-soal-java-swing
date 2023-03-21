@@ -13,8 +13,14 @@ import fgroupindonesia.frames.management.RewardsFrame;
 import fgroupindonesia.frames.management.RewardsManagementFrame;
 import fgroupindonesia.frames.management.StudentFrame;
 import fgroupindonesia.frames.management.StudentManagementFrame;
+import fgroupindonesia.helper.CustomJDesktopPane;
 import fgroupindonesia.helper.LoginHistory;
+import fgroupindonesia.helper.SystemPath;
 import java.awt.Dimension;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -31,6 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
     JDesktopPane desktop;
     User.Type akses;
     LoginHistory loghist = new LoginHistory();
+    BufferedImage myBackground;
 
     public void setAccess(String nama, User.Type jenis) {
         akses = jenis;
@@ -39,11 +46,24 @@ public class MainFrame extends javax.swing.JFrame {
         loghist.add(new History(nama, jenis));
     }
 
+    private void updateImageIcon() {
+        this.setIconImage(new ImageIcon(SystemPath.getCompletePath("logo.png")).getImage());
+    }
+
     public MainFrame() {
         initComponents();
+        updateImageIcon();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultLookAndFeelDecorated(true);
-        desktop = new JDesktopPane();
+        //desktop = new JDesktopPane();
+        try {
+            myBackground = ImageIO.read(new File(SystemPath.getCompletePath("background.jpg")));
+            desktop = new CustomJDesktopPane(myBackground);
+
+        } catch (Exception ex) {
+            desktop = new JDesktopPane();
+        }
+
         setContentPane(desktop);
         desktop.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE);
     }
@@ -61,6 +81,8 @@ public class MainFrame extends javax.swing.JFrame {
         fileMenu = new javax.swing.JMenu();
         loginMenu = new javax.swing.JMenuItem();
         updateLanguageMenu = new javax.swing.JMenuItem();
+        jSeparator1 = new javax.swing.JPopupMenu.Separator();
+        exitMenu = new javax.swing.JMenuItem();
         aktifitasMenu = new javax.swing.JMenu();
         historyMenu = new javax.swing.JMenuItem();
         managementMenu = new javax.swing.JMenu();
@@ -71,10 +93,13 @@ public class MainFrame extends javax.swing.JFrame {
         rewardsManagementMenu = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Sistem Aplikasi Soal Home Schooling");
         setResizable(false);
 
+        fileMenu.setMnemonic('F');
         fileMenu.setText("File");
 
+        loginMenu.setMnemonic('L');
         loginMenu.setText("Login");
         loginMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,6 +108,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         fileMenu.add(loginMenu);
 
+        updateLanguageMenu.setMnemonic('U');
         updateLanguageMenu.setText("Update Bahasa");
         updateLanguageMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -90,11 +116,23 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         fileMenu.add(updateLanguageMenu);
+        fileMenu.add(jSeparator1);
+
+        exitMenu.setMnemonic('E');
+        exitMenu.setText("Exit");
+        exitMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenu);
 
         jMenuBar1.add(fileMenu);
 
+        aktifitasMenu.setMnemonic('A');
         aktifitasMenu.setText("Aktifitas");
 
+        historyMenu.setMnemonic('H');
         historyMenu.setText("History");
         historyMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -105,8 +143,10 @@ public class MainFrame extends javax.swing.JFrame {
 
         jMenuBar1.add(aktifitasMenu);
 
+        managementMenu.setMnemonic('M');
         managementMenu.setText("Manajemen");
 
+        categoryManagementMenu.setMnemonic('K');
         categoryManagementMenu.setText("Kategori");
         categoryManagementMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -115,6 +155,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         managementMenu.add(categoryManagementMenu);
 
+        questionManagementMenu.setMnemonic('S');
         questionManagementMenu.setText("Soal");
         questionManagementMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -123,6 +164,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         managementMenu.add(questionManagementMenu);
 
+        answerQuestionManagementMenu.setMnemonic('J');
         answerQuestionManagementMenu.setText("Jawaban");
         answerQuestionManagementMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -131,6 +173,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         managementMenu.add(answerQuestionManagementMenu);
 
+        studentManagementMenu.setMnemonic('S');
         studentManagementMenu.setText("Siswa");
         studentManagementMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -139,6 +182,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
         managementMenu.add(studentManagementMenu);
 
+        rewardsManagementMenu.setMnemonic('I');
         rewardsManagementMenu.setText("Imbalan");
         rewardsManagementMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -208,46 +252,91 @@ public class MainFrame extends javax.swing.JFrame {
         displayManagementRewards();
     }//GEN-LAST:event_rewardsManagementMenuActionPerformed
 
-    private void displayHistory() {
+    private void exitMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuActionPerformed
+
+        System.exit(0);
+
+    }//GEN-LAST:event_exitMenuActionPerformed
+
+    public void displayHistory() {
         HistoryFrame frame = new HistoryFrame();
         deployDesktop(frame);
         frame.setMainFrameReference(this);
     }
 
     StudentManagementFrame stm_frame;
+    RewardsManagementFrame rtm_frame;
+    QuestionManagementFrame qm_frame;
+    CategoryManagementFrame ctm_frame;
+    AnswerQuestionManagementFrame aqm_frame;
 
-    private void displayManagementStudent() {
+    public void displayManagementStudent() {
         stm_frame = new StudentManagementFrame();
         deployDesktop(stm_frame);
         stm_frame.setMainFrameReference(this);
     }
 
-    private void displayManagementRewards() {
-        RewardsManagementFrame frame = new RewardsManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+    public void displayManagementRewards() {
+        rtm_frame = new RewardsManagementFrame();
+        deployDesktop(rtm_frame);
+        rtm_frame.setMainFrameReference(this);
     }
 
-    private void displayManagementCategory() {
-        CategoryManagementFrame frame = new CategoryManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+    public void displayManagementCategory() {
+        ctm_frame = new CategoryManagementFrame();
+        deployDesktop(ctm_frame);
+        ctm_frame.setMainFrameReference(this);
     }
 
-    private void displayManagementAnswerQuestion() {
-        AnswerQuestionManagementFrame frame = new AnswerQuestionManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+    public void displayManagementAnswerQuestion() {
+        aqm_frame = new AnswerQuestionManagementFrame();
+        deployDesktop(aqm_frame);
+        aqm_frame.setMainFrameReference(this);
     }
 
-    private void displayManagementQuestion() {
-        QuestionManagementFrame frame = new QuestionManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+    public void displayManagementQuestion() {
+        qm_frame = new QuestionManagementFrame();
+        deployDesktop(qm_frame);
+        qm_frame.setMainFrameReference(this);
     }
 
     public void displayStudentForm() {
         StudentFrame frame = new StudentFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayCategoryForm(int id) {
+        CategoryFrame frame = new CategoryFrame();
+        frame.setEditMode(id);
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayAnswerQuestionForm(int id) {
+        AnswerQuestionFrame frame = new AnswerQuestionFrame();
+        frame.setEditMode(id);
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayQuestionForm(int id) {
+        QuestionFrame frame = new QuestionFrame();
+        frame.setEditMode(id);
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayStudentForm(int id) {
+        StudentFrame frame = new StudentFrame();
+        frame.setEditMode(id);
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayRewardsForm(int id) {
+        RewardsFrame frame = new RewardsFrame();
+        frame.setEditMode(id);
         deployDesktop(frame);
         frame.setMainFrameReference(this);
     }
@@ -276,6 +365,12 @@ public class MainFrame extends javax.swing.JFrame {
         frame.setMainFrameReference(this);
     }
 
+    public void displayMenuManagement() {
+        MenuManagementFrame frame = new MenuManagementFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
     private void deployDesktop(JInternalFrame frame) {
         frame.setVisible(true);
         frame.setClosable(true);
@@ -294,6 +389,22 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void refresh_studentManagement() {
         stm_frame.refresh();
+    }
+
+    public void refresh_categoryManagement() {
+        ctm_frame.refresh();
+    }
+
+    public void refresh_questionManagement() {
+        qm_frame.refresh();
+    }
+
+    public void refresh_answerQuestionManagement() {
+        aqm_frame.refresh();
+    }
+
+    public void refresh_rewardsManagement() {
+        rtm_frame.refresh();
     }
 
     private void setCenterInternal(JInternalFrame frame) {
@@ -318,7 +429,7 @@ public class MainFrame extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -347,9 +458,11 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JMenu aktifitasMenu;
     private javax.swing.JMenuItem answerQuestionManagementMenu;
     private javax.swing.JMenuItem categoryManagementMenu;
+    private javax.swing.JMenuItem exitMenu;
     private javax.swing.JMenu fileMenu;
     private javax.swing.JMenuItem historyMenu;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JPopupMenu.Separator jSeparator1;
     private javax.swing.JMenuItem loginMenu;
     private javax.swing.JMenu managementMenu;
     private javax.swing.JMenuItem questionManagementMenu;

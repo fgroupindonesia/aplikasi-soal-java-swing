@@ -6,11 +6,13 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
+            <Property name="mnemonic" type="int" value="70"/>
             <Property name="text" type="java.lang.String" value="File"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="loginMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="76"/>
                 <Property name="text" type="java.lang.String" value="Login"/>
               </Properties>
               <Events>
@@ -19,21 +21,35 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="updateLanguageMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="85"/>
                 <Property name="text" type="java.lang.String" value="Update Bahasa"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="updateLanguageMenuActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="exitMenu">
+              <Properties>
+                <Property name="mnemonic" type="int" value="69"/>
+                <Property name="text" type="java.lang.String" value="Exit"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="exitMenuActionPerformed"/>
+              </Events>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="aktifitasMenu">
           <Properties>
+            <Property name="mnemonic" type="int" value="65"/>
             <Property name="text" type="java.lang.String" value="Aktifitas"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="historyMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="72"/>
                 <Property name="text" type="java.lang.String" value="History"/>
               </Properties>
               <Events>
@@ -44,11 +60,13 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="managementMenu">
           <Properties>
+            <Property name="mnemonic" type="int" value="77"/>
             <Property name="text" type="java.lang.String" value="Manajemen"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="categoryManagementMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="75"/>
                 <Property name="text" type="java.lang.String" value="Kategori"/>
               </Properties>
               <Events>
@@ -57,6 +75,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="questionManagementMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Soal"/>
               </Properties>
               <Events>
@@ -65,6 +84,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="answerQuestionManagementMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="74"/>
                 <Property name="text" type="java.lang.String" value="Jawaban"/>
               </Properties>
               <Events>
@@ -73,6 +93,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="studentManagementMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="83"/>
                 <Property name="text" type="java.lang.String" value="Siswa"/>
               </Properties>
               <Events>
@@ -81,6 +102,7 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="rewardsManagementMenu">
               <Properties>
+                <Property name="mnemonic" type="int" value="73"/>
                 <Property name="text" type="java.lang.String" value="Imbalan"/>
               </Properties>
               <Events>
@@ -94,6 +116,7 @@
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
+    <Property name="title" type="java.lang.String" value="Sistem Aplikasi Soal Home Schooling"/>
     <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>

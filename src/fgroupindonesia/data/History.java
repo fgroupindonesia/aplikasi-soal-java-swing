@@ -18,15 +18,21 @@ public class History {
 
         this.setTanggal(sdf.format(new Date()));
     }
+    
+    public History(){
+        
+    }
 
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);
     }
 
+    private int id;
     private String username;
     private User.Type jenis;
     private String tanggal;
+    private String description;
 
     /**
      * @return the username
@@ -68,5 +74,33 @@ public class History {
      */
     public void setTanggal(String tanggal) {
         this.tanggal = tanggal;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 }

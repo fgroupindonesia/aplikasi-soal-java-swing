@@ -1,6 +1,10 @@
 package fgroupindonesia.frames.management;
 
+import fgroupindonesia.data.History;
 import fgroupindonesia.frames.MainFrame;
+import fgroupindonesia.helper.DBConnection;
+import fgroupindonesia.helper.TableRenderer;
+import java.util.ArrayList;
 
 /**
  *
@@ -13,12 +17,31 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
      */
     public HistoryFrame() {
         initComponents();
+        db = new DBConnection();
+        refresh();
     }
 
+    DBConnection db;
     MainFrame mframe;
+    ArrayList<History> list;
+    TableRenderer tableRender;
 
     public void setMainFrameReference(MainFrame mf) {
         mframe = mf;
+    }
+
+    public void refresh() {
+        db.connect();
+        list = db.select_history_all();
+        tableRender = new TableRenderer();
+        tableRender.render_history(tableDataManagement, list);
+        labelTotalData.setText("Total Data : " + list.size());
+
+    }
+
+    public void clearAll() {
+        db.delete_history_all();
+        refresh();
     }
 
     /**
@@ -30,21 +53,87 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 394, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tableDataManagement = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        labelTotalData = new javax.swing.JLabel();
+
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosed(evt);
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
+
+        tableDataManagement.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Id", "username", "jenis", "description", "tanggal"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tableDataManagement);
+        if (tableDataManagement.getColumnModel().getColumnCount() > 0) {
+            tableDataManagement.getColumnModel().getColumn(0).setMinWidth(0);
+            tableDataManagement.getColumnModel().getColumn(0).setPreferredWidth(0);
+            tableDataManagement.getColumnModel().getColumn(0).setMaxWidth(0);
+        }
+
+        getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        jPanel1.setPreferredSize(new java.awt.Dimension(403, 50));
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/search.png"))); // NOI18N
+        jButton1.setText("Search");
+        jPanel1.add(jButton1);
+
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/clear.png"))); // NOI18N
+        jButton2.setText("Clear All");
+        jPanel1.add(jButton2);
+
+        getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        labelTotalData.setText("Total Data : x");
+        getContentPane().add(labelTotalData, java.awt.BorderLayout.PAGE_END);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
+        mframe.displayMenuManagement();
+        this.dispose();
+    }//GEN-LAST:event_formInternalFrameClosed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel labelTotalData;
+    private javax.swing.JTable tableDataManagement;
     // End of variables declaration//GEN-END:variables
 }

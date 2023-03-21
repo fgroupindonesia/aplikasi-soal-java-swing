@@ -24,6 +24,14 @@ public class StudentFrame extends javax.swing.JInternalFrame {
         mframe = mf;
     }
 
+    public void setEditMode(int id) {
+        data = db.select_student_specific(id);
+
+        textfieldNamaPelajar.setText(data.getNama());
+        textfieldTTL.setText(data.getTtl());
+        comboboxKelas.setSelectedItem(data.getKelas());
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -76,20 +84,30 @@ public class StudentFrame extends javax.swing.JInternalFrame {
     DBConnection db;
     Student data;
 
-    private void buttonSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanActionPerformed
-
-        data = new Student();
+    private void obtainFormValues() {
         data.setKelas(comboboxKelas.getSelectedItem().toString());
         data.setNama(textfieldNamaPelajar.getText());
         data.setTtl(textfieldTTL.getText());
-        
-        db.insert_student(data);
-        
+    }
+
+    private void buttonSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSimpanActionPerformed
+
+        if (data == null) {
+            // data inserted
+            data = new Student();
+            obtainFormValues();
+
+            db.insert_student(data);
+        } else {
+            // data updated
+            obtainFormValues();
+            db.update_student(data);
+        }
+
         mframe.refresh_studentManagement();
-        
+
         this.dispose();
-        
-        
+
 
     }//GEN-LAST:event_buttonSimpanActionPerformed
 

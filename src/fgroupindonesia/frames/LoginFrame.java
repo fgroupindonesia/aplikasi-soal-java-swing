@@ -6,10 +6,12 @@
 package fgroupindonesia.frames;
 
 import fgroupindonesia.data.User;
+import fgroupindonesia.helper.DBConnection;
 import fgroupindonesia.helper.fx.Highlight;
 import java.awt.CardLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -23,6 +25,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
     MainFrame mainFrame = null;
     CardLayout cardLayout;
     Container container = null;
+    DBConnection db = new DBConnection();
 
     public void setMainFrameReference(MainFrame mf) {
         mainFrame = mf;
@@ -54,13 +57,14 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         parentsLabel = new javax.swing.JLabel();
         panelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        usernameTextfield = new javax.swing.JTextField();
+        textfieldParentUsername = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
-        passwordTextfield = new javax.swing.JPasswordField();
+        textfieldPasswordParent = new javax.swing.JPasswordField();
         buttonLogin = new javax.swing.JButton();
         panelKidsDetail = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        kidsNameTextfield = new javax.swing.JTextField();
+        textfieldNamaKamu = new javax.swing.JTextField();
+        buttonMulai = new javax.swing.JButton();
 
         getContentPane().setLayout(new java.awt.CardLayout());
 
@@ -121,13 +125,24 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
         jLabel1.setText("Username : ");
         panelLogin.add(jLabel1);
-        panelLogin.add(usernameTextfield);
+
+        textfieldParentUsername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textfieldParentUsernameActionPerformed(evt);
+            }
+        });
+        panelLogin.add(textfieldParentUsername);
 
         jLabel2.setText("Password : ");
         panelLogin.add(jLabel2);
 
-        passwordTextfield.setText("jPasswordField1");
-        panelLogin.add(passwordTextfield);
+        textfieldPasswordParent.setText("jPasswordField1");
+        textfieldPasswordParent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                textfieldPasswordParentActionPerformed(evt);
+            }
+        });
+        panelLogin.add(textfieldPasswordParent);
 
         buttonLogin.setText("Login");
         buttonLogin.addActionListener(new java.awt.event.ActionListener() {
@@ -146,12 +161,17 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         panelKidsDetail.add(jLabel4);
 
-        kidsNameTextfield.addActionListener(new java.awt.event.ActionListener() {
+        textfieldNamaKamu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textfieldNamaKamu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kidsNameTextfieldActionPerformed(evt);
+                textfieldNamaKamuActionPerformed(evt);
             }
         });
-        panelKidsDetail.add(kidsNameTextfield);
+        panelKidsDetail.add(textfieldNamaKamu);
+
+        buttonMulai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        buttonMulai.setText("Mulai!");
+        panelKidsDetail.add(buttonMulai);
 
         getContentPane().add(panelKidsDetail, "kids detail");
 
@@ -183,17 +203,47 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         cardLayout.show(container, "login form");
     }//GEN-LAST:event_parentsLabelMouseClicked
 
-    private void kidsNameTextfieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kidsNameTextfieldActionPerformed
+    private void textfieldNamaKamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldNamaKamuActionPerformed
 
-        setAccess(kidsNameTextfield.getText(), User.Type.kids);
+        setAccess(textfieldNamaKamu.getText(), User.Type.kids);
 
-    }//GEN-LAST:event_kidsNameTextfieldActionPerformed
+    }//GEN-LAST:event_textfieldNamaKamuActionPerformed
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
 
-        setAccess(usernameTextfield.getText(), User.Type.parents);
-
+        loginProcess();
     }//GEN-LAST:event_buttonLoginActionPerformed
+
+    private void textfieldParentUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldParentUsernameActionPerformed
+
+        textfieldPasswordParent.requestFocus();
+
+    }//GEN-LAST:event_textfieldParentUsernameActionPerformed
+
+    private void textfieldPasswordParentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldPasswordParentActionPerformed
+
+        loginProcess();
+
+    }//GEN-LAST:event_textfieldPasswordParentActionPerformed
+
+    private void loginProcess() {
+
+        String username = textfieldParentUsername.getText();
+        String pass = textfieldPasswordParent.getText();
+
+        System.out.println("username " + username + " dan pass " + pass);
+        
+        if (db.verify_user(username, pass)) {
+            setAccess(textfieldParentUsername.getText(), User.Type.parents);
+
+            mainFrame.displayMenuManagement();
+
+            this.dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Ulangi lagi username / password salah!");
+        }
+
+    }
 
     private void setAccess(String us, User.Type jenis) {
         mainFrame.setAccess(us, jenis);
@@ -210,18 +260,19 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonLogin;
+    private javax.swing.JButton buttonMulai;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel kidsLabel;
-    private javax.swing.JTextField kidsNameTextfield;
     private javax.swing.JPanel panelKidsDetail;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelUserType;
     private javax.swing.JLabel parentsLabel;
-    private javax.swing.JPasswordField passwordTextfield;
-    private javax.swing.JTextField usernameTextfield;
+    private javax.swing.JTextField textfieldNamaKamu;
+    private javax.swing.JTextField textfieldParentUsername;
+    private javax.swing.JPasswordField textfieldPasswordParent;
     // End of variables declaration//GEN-END:variables
 }

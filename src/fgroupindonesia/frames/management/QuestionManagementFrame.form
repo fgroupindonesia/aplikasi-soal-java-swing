@@ -4,6 +4,9 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameClosed" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameClosed"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -87,7 +90,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="jLabel2">
+        <Component class="javax.swing.JLabel" name="labelTotalData">
           <Properties>
             <Property name="text" type="java.lang.String" value="Total Data : x"/>
           </Properties>
@@ -141,6 +144,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelAddMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelEdit">
               <Properties>
@@ -155,6 +161,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelEditMouseClicked"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="labelDelete">
               <Properties>
@@ -169,6 +178,9 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="labelDeleteMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

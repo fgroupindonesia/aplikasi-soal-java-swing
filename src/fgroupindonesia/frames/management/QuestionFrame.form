@@ -45,29 +45,24 @@
                 <Property name="text" type="java.lang.String" value="Nama Soal : "/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="jTextField1">
+            <Component class="javax.swing.JTextField" name="textfieldNamaSoal">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Jumlah Pertanyaan :"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JSpinner" name="jSpinner1">
+            <Component class="javax.swing.JSpinner" name="spinnerJumlahPertanyaan">
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Kategori : "/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBox1">
+            <Component class="javax.swing.JComboBox" name="comboboxKategori">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
+                  <StringArray count="0"/>
                 </Property>
               </Properties>
               <AuxValues>
@@ -79,7 +74,7 @@
                 <Property name="text" type="java.lang.String" value="Limit Waktu : (Menit)"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="jComboBox2">
+            <Component class="javax.swing.JComboBox" name="comboboxLimitWaktu">
               <Properties>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="6">
@@ -270,11 +265,8 @@
                     <Component class="javax.swing.JComboBox" name="comboboxModelSoal">
                       <Properties>
                         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                          <StringArray count="4">
+                          <StringArray count="1">
                             <StringItem index="0" value="Model 1"/>
-                            <StringItem index="1" value="Model 2"/>
-                            <StringItem index="2" value="Model 3"/>
-                            <StringItem index="3" value="Model 4"/>
                           </StringArray>
                         </Property>
                       </Properties>
@@ -308,6 +300,9 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&gt;&gt; Selanjutnya"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buttonSelanjutnyaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>
