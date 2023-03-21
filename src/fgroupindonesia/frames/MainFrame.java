@@ -2,6 +2,8 @@ package fgroupindonesia.frames;
 
 import fgroupindonesia.data.History;
 import fgroupindonesia.data.User;
+import fgroupindonesia.frames.client.MenuRewardsFrame;
+import fgroupindonesia.frames.client.StudentQuestionFrame;
 import fgroupindonesia.frames.management.AnswerQuestionFrame;
 import fgroupindonesia.frames.management.AnswerQuestionManagementFrame;
 import fgroupindonesia.frames.management.CategoryFrame;
@@ -49,15 +51,15 @@ public class MainFrame extends javax.swing.JFrame {
         }
     }
 
-    public void setAccess(String nama, User.Type jenis) {
+    public void setAccess(String nama, User.Type jenis, String desc) {
         dataUser = new User();
         dataUser.setUsername(nama);
 
         akses = jenis;
         dataHistory = new History(nama, jenis);
-        dataHistory.setDescription("login");
+        dataHistory.setDescription(desc);
 
-        loginMenu.setText("Logout dari (" + jenis + ")");
+        loginMenu.setText(desc + " dari (" + jenis + ")");
 
         db.insert_history(dataHistory);
         openMenuAccess(true);
@@ -167,9 +169,19 @@ public class MainFrame extends javax.swing.JFrame {
         aktifitasMenu.add(historyMenu);
 
         checkRewardsMenu.setText("Melihat Imbalan");
+        checkRewardsMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                checkRewardsMenuActionPerformed(evt);
+            }
+        });
         aktifitasMenu.add(checkRewardsMenu);
 
         startQuestionMenu.setText("Mulai Mengerjakan Soal");
+        startQuestionMenu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                startQuestionMenuActionPerformed(evt);
+            }
+        });
         aktifitasMenu.add(startQuestionMenu);
 
         requestAdditionalQuestionMenu.setText("Minta Soal Tambahan");
@@ -292,8 +304,31 @@ public class MainFrame extends javax.swing.JFrame {
 
     }//GEN-LAST:event_exitMenuActionPerformed
 
+    private void checkRewardsMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkRewardsMenuActionPerformed
+        displayMenuRewards();
+    }//GEN-LAST:event_checkRewardsMenuActionPerformed
+
+    private void startQuestionMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startQuestionMenuActionPerformed
+
+        displayStartQuestion();
+
+    }//GEN-LAST:event_startQuestionMenuActionPerformed
+
+    public void displayStartQuestion() {
+        StudentQuestionFrame qframe = new StudentQuestionFrame();
+        deployDesktop(qframe);
+        qframe.startFor(dataUser);
+        qframe.setMainFrameReference(this);
+    }
+
     public void displayHistory() {
-        HistoryFrame frame = new HistoryFrame();
+        HistoryFrame frame;
+
+        if (akses == User.Type.kids) {
+            frame = new HistoryFrame(dataUser);
+        } else {
+            frame = new HistoryFrame();
+        }
         deployDesktop(frame);
         frame.setMainFrameReference(this);
     }
@@ -395,6 +430,12 @@ public class MainFrame extends javax.swing.JFrame {
 
     public void displayAnswerQuestionForm() {
         AnswerQuestionFrame frame = new AnswerQuestionFrame();
+        deployDesktop(frame);
+        frame.setMainFrameReference(this);
+    }
+
+    public void displayMenuRewards() {
+        MenuRewardsFrame frame = new MenuRewardsFrame();
         deployDesktop(frame);
         frame.setMainFrameReference(this);
     }

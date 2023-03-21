@@ -1,21 +1,123 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package fgroupindonesia.frames.client;
+
+import fgroupindonesia.data.AnswerQuestion;
+import fgroupindonesia.data.Question;
+import fgroupindonesia.data.User;
+import fgroupindonesia.frames.MainFrame;
+import fgroupindonesia.helper.DBConnection;
+import fgroupindonesia.helper.QJSONHelper;
+import fgroupindonesia.helper.fx.TickTimer;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author asus
  */
-public class QuestionFrame extends javax.swing.JInternalFrame {
+public class StudentQuestionFrame extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form QuestionFrame
      */
-    public QuestionFrame() {
+    public StudentQuestionFrame() {
         initComponents();
+    }
+
+    TickTimer counter;
+    MainFrame mframe;
+    int jumlahMenit;
+    DBConnection db;
+    String kategori;
+    String isiSoal;
+    Question questionTerpilih;
+    ArrayList<Question> allQuestion;
+    ArrayList<AnswerQuestion> allAnswerQuestion;
+
+    public void setMainFrameReference(MainFrame mf) {
+        mframe = mf;
+    }
+
+    public void startFor(User dataUserna) {
+        JOptionPane.showMessageDialog(null, "Soal ini terbatas hanya " + jumlahMenit);
+
+        db = new DBConnection();
+
+        kategori = db.select_student_specific(dataUserna.getUsername()).getKelas();
+        allQuestion = db.select_question_specific(kategori);
+
+        System.out.println("Ada beberapa " + allQuestion.size() + " soal untuk " + kategori);
+
+        if (allQuestion.size() != 0) {
+            // another check
+            // is this student already asked by that question?
+            for (Question q : allQuestion) {
+                allAnswerQuestion = db.select_answer_question_specific(q.getNama(), dataUserna.getUsername());
+
+                //System.out.println("Jawaban dia " + allAnswerQuestion.size());
+                if (allAnswerQuestion.size() == 0) {
+                    questionTerpilih = q;
+                    break;
+                }
+
+            }
+
+            //System.out.println("yg ada soal " + questionTerpilih.getNama());
+            // render soal for this question
+            renderSoal(questionTerpilih);
+
+        } else {
+            // when the question is not available yet
+            JOptionPane.showMessageDialog(null, "Pertanyaan untuk siswa " + dataUserna.getUsername() + " [" + kategori + "]" + " saat ini belum tersedia!");
+            this.dispose();
+        }
+    }
+
+    QJSONHelper qjson = new QJSONHelper();
+    
+    
+    private void nextQuestion(){
+        qjson.next();
+        
+    }
+    
+    private void prepareJSONHelper(){
+        qjson.setData(isiSoal);
+        
+        qjson.setTextarea(textAreaQuestion);
+        qjson.setJr1(radioButtonSoalMode1_PG_A1);
+        qjson.setJr2(radioButtonSoalMode1_PG_B1);
+        qjson.setJr3(radioButtonSoalMode1_PG_C1);
+        qjson.setJr4(radioButtonSoalMode1_PG_D1);
+        qjson.setQuestionNumberLabel(labelNomorSoal);
+    
+        qjson.renderAll();
+    }
+    
+    private void renderSoal(Question pertanyaan) {
+
+        // this is json format
+        isiSoal = pertanyaan.getIsi_soal();
+        
+        prepareJSONHelper();
+        
+        labelTotalSoal.setText("Total Soal : " + pertanyaan.getJumlah_pertanyaan());
+        
+        System.out.println("isi soalna " + isiSoal);
+
+        buttonSoalSebelumnya.setVisible(false);
+        buttonSoalSelanjutnya.setVisible(true);
+
+        counter = new TickTimer();
+        counter.setStudentQuestionFrameRef(this);
+        counter.setPrefix("Waktu Tersisa ");
+        counter.setTimeLimit(pertanyaan.getLimit_waktu());
+        counter.setLabel(labelWaktuTersisa);
+        counter.start();
+
+    }
+
+    public void warning() {
+        JOptionPane.showMessageDialog(null, "waktu habis!");
     }
 
     /**
@@ -27,6 +129,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroupPilihanGandaSoalMode_1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         buttonSoalSebelumnya = new javax.swing.JButton();
         buttonSoalSelanjutnya = new javax.swing.JButton();
@@ -36,7 +139,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         panelSoal = new javax.swing.JPanel();
         panelSoalMode1_PGText = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
+        textAreaQuestion = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         radioButtonSoalMode1_PG_A1 = new javax.swing.JRadioButton();
@@ -63,6 +166,11 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jPanel1.add(buttonSoalSebelumnya);
 
         buttonSoalSelanjutnya.setText(">> Selanjutnya");
+        buttonSoalSelanjutnya.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSoalSelanjutnyaActionPerformed(evt);
+            }
+        });
         jPanel1.add(buttonSoalSelanjutnya);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_END);
@@ -84,14 +192,14 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jScrollPane1.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
         jScrollPane1.setPreferredSize(new java.awt.Dimension(123, 100));
 
-        jTextArea1.setBackground(java.awt.SystemColor.control);
-        jTextArea1.setColumns(20);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jTextArea1.setLineWrap(true);
-        jTextArea1.setRows(5);
-        jTextArea1.setWrapStyleWord(true);
-        jTextArea1.setAutoscrolls(false);
-        jScrollPane1.setViewportView(jTextArea1);
+        textAreaQuestion.setBackground(java.awt.SystemColor.control);
+        textAreaQuestion.setColumns(20);
+        textAreaQuestion.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textAreaQuestion.setLineWrap(true);
+        textAreaQuestion.setRows(5);
+        textAreaQuestion.setWrapStyleWord(true);
+        textAreaQuestion.setAutoscrolls(false);
+        jScrollPane1.setViewportView(textAreaQuestion);
 
         panelSoalMode1_PGText.add(jScrollPane1, java.awt.BorderLayout.PAGE_START);
 
@@ -100,18 +208,22 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         jPanel8.setLayout(new java.awt.GridLayout(4, 1));
 
+        buttonGroupPilihanGandaSoalMode_1.add(radioButtonSoalMode1_PG_A1);
         radioButtonSoalMode1_PG_A1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         radioButtonSoalMode1_PG_A1.setText("Pilihan A");
         jPanel8.add(radioButtonSoalMode1_PG_A1);
 
+        buttonGroupPilihanGandaSoalMode_1.add(radioButtonSoalMode1_PG_B1);
         radioButtonSoalMode1_PG_B1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         radioButtonSoalMode1_PG_B1.setText("Pilihan B");
         jPanel8.add(radioButtonSoalMode1_PG_B1);
 
+        buttonGroupPilihanGandaSoalMode_1.add(radioButtonSoalMode1_PG_C1);
         radioButtonSoalMode1_PG_C1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         radioButtonSoalMode1_PG_C1.setText("Pilihan C");
         jPanel8.add(radioButtonSoalMode1_PG_C1);
 
+        buttonGroupPilihanGandaSoalMode_1.add(radioButtonSoalMode1_PG_D1);
         radioButtonSoalMode1_PG_D1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         radioButtonSoalMode1_PG_D1.setText("Pilihan D");
         jPanel8.add(radioButtonSoalMode1_PG_D1);
@@ -208,8 +320,29 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonSoalSelanjutnyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSoalSelanjutnyaActionPerformed
+
+        if (checkFormFilled()) {
+            nextQuestion();
+        } else {
+            JOptionPane.showMessageDialog(null, "Pilih dulu jawabannya baru boleh lanjut...!!!");
+        }
+
+
+    }//GEN-LAST:event_buttonSoalSelanjutnyaActionPerformed
+
+    private boolean checkFormFilled() {
+        boolean terisi = false;
+
+        if (buttonGroupPilihanGandaSoalMode_1.getSelection() != null) {
+            terisi = true;
+        }
+
+        return terisi;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroupPilihanGandaSoalMode_1;
     private javax.swing.JButton buttonSoalSebelumnya;
     private javax.swing.JButton buttonSoalSelanjutnya;
     private javax.swing.JLabel jLabel1;
@@ -224,7 +357,6 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JLabel labelNomorSoal;
     private javax.swing.JLabel labelTotalSoal;
     private javax.swing.JLabel labelWaktuTersisa;
@@ -237,5 +369,6 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton radioButtonSoalMode1_PG_B1;
     private javax.swing.JRadioButton radioButtonSoalMode1_PG_C1;
     private javax.swing.JRadioButton radioButtonSoalMode1_PG_D1;
+    private javax.swing.JTextArea textAreaQuestion;
     // End of variables declaration//GEN-END:variables
 }

@@ -2,9 +2,13 @@ package fgroupindonesia.frames.management;
 
 import com.google.gson.Gson;
 import fgroupindonesia.data.Category;
+import fgroupindonesia.data.NavigasiQuestion;
 import fgroupindonesia.data.Question;
+import fgroupindonesia.data.QuestionSub;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
+import fgroupindonesia.helper.TableRenderer;
+import java.awt.CardLayout;
 import java.util.ArrayList;
 
 /**
@@ -20,21 +24,24 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         initComponents();
         db = new DBConnection();
         renderKategori();
-    }
-    
-    private void renderKategori(){
-       ArrayList <Category> data =  db.select_category_all();
-       comboboxKategori.removeAll();
-       for(Category ct : data ){
-           comboboxKategori.addItem(ct.getNama());
-       }
+        tableRender = new TableRenderer();
+        card = (CardLayout) panelCanvas.getLayout();
     }
 
+    private void renderKategori() {
+        ArrayList<Category> data = db.select_category_all();
+        comboboxKategori.removeAll();
+        for (Category ct : data) {
+            comboboxKategori.addItem(ct.getNama());
+        }
+    }
+
+    CardLayout card;
     MainFrame mframe;
     Question data;
     DBConnection db;
     String isiSoal; // this will be json format
-    
+    TableRenderer tableRender;
 
     public void setMainFrameReference(MainFrame mf) {
         mframe = mf;
@@ -48,21 +55,21 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         comboboxKategori.setSelectedItem(data.getKategori());
         comboboxLimitWaktu.setSelectedItem(data.getLimit_waktu());
     }
-    
+
     public void obtainFormValues() {
-        
-        data.setJumlah_pertanyaan((Integer)spinnerJumlahPertanyaan.getValue());
+
+        data.setJumlah_pertanyaan((Integer) spinnerJumlahPertanyaan.getValue());
         data.setNama(textfieldNamaSoal.getText());
         data.setKategori(comboboxKategori.getSelectedItem().toString());
-        data.setLimit_waktu((Integer)comboboxLimitWaktu.getSelectedItem());
-        
+        data.setLimit_waktu((Integer) comboboxLimitWaktu.getSelectedItem());
+
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel2 = new javax.swing.JPanel();
+        panelCanvas = new javax.swing.JPanel();
         panelConfigSoal = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         textfieldNamaSoal = new javax.swing.JTextField();
@@ -93,7 +100,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         setTitle("Soal ");
 
-        jPanel2.setLayout(new java.awt.CardLayout());
+        panelCanvas.setLayout(new java.awt.CardLayout());
 
         panelConfigSoal.setLayout(new java.awt.GridLayout(8, 1));
 
@@ -116,7 +123,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         comboboxLimitWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "15", "20", "25", "30" }));
         panelConfigSoal.add(comboboxLimitWaktu);
 
-        jPanel2.add(panelConfigSoal, "card2");
+        panelCanvas.add(panelConfigSoal, "config_soal");
 
         panelEditSoal.setLayout(new java.awt.BorderLayout());
 
@@ -134,20 +141,20 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         tableJawabanPGSoal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"A", null, null},
-                {"B", null, null},
-                {"C", null, null},
-                {"D", null, null}
+                {null, "A", null},
+                {null, "B", null},
+                {null, "C", null},
+                {null, "D", null}
             },
             new String [] {
-                "PG", "Text", "Jawaban"
+                "Jawaban", "PG", "Text"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, true, true
+                true, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -160,12 +167,12 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tableJawabanPGSoal);
         if (tableJawabanPGSoal.getColumnModel().getColumnCount() > 0) {
-            tableJawabanPGSoal.getColumnModel().getColumn(0).setMinWidth(40);
-            tableJawabanPGSoal.getColumnModel().getColumn(0).setPreferredWidth(40);
-            tableJawabanPGSoal.getColumnModel().getColumn(0).setMaxWidth(40);
-            tableJawabanPGSoal.getColumnModel().getColumn(2).setMinWidth(55);
-            tableJawabanPGSoal.getColumnModel().getColumn(2).setPreferredWidth(55);
-            tableJawabanPGSoal.getColumnModel().getColumn(2).setMaxWidth(55);
+            tableJawabanPGSoal.getColumnModel().getColumn(0).setMinWidth(55);
+            tableJawabanPGSoal.getColumnModel().getColumn(0).setPreferredWidth(55);
+            tableJawabanPGSoal.getColumnModel().getColumn(0).setMaxWidth(55);
+            tableJawabanPGSoal.getColumnModel().getColumn(1).setMinWidth(40);
+            tableJawabanPGSoal.getColumnModel().getColumn(1).setPreferredWidth(40);
+            tableJawabanPGSoal.getColumnModel().getColumn(1).setMaxWidth(40);
         }
 
         panelModelSoal1.add(jScrollPane2, java.awt.BorderLayout.CENTER);
@@ -199,9 +206,9 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         panelEditSoal.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
-        jPanel2.add(panelEditSoal, "card3");
+        panelCanvas.add(panelEditSoal, "edit_soal");
 
-        getContentPane().add(jPanel2, java.awt.BorderLayout.CENTER);
+        getContentPane().add(panelCanvas, java.awt.BorderLayout.CENTER);
 
         buttonKembali.setText("Kembali <<");
         jPanel1.add(buttonKembali);
@@ -224,11 +231,64 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         if (data != null) {
             // coming from editing mode
             renderQuestionData();
-        } else {
+        } else if (NavigasiQuestion.current_index == NavigasiQuestion.CONFIG_SOAL) {
             // coming from new data
+
+            card.show(panelCanvas, "edit_soal");
+            buttonKembali.setEnabled(true);
+            buttonSelanjutnya.setEnabled(true);
+            
+            // prepare empty array with the following numbers
+            allqsub = new QuestionSub[(Integer)spinnerJumlahPertanyaan.getValue()];
+            prepareUI();
+            
+        } else if (NavigasiQuestion.current_index == NavigasiQuestion.EDIT_SOAL) {
+
+            proceedNextQuestion();
         }
 
     }//GEN-LAST:event_buttonSelanjutnyaActionPerformed
+
+    int nomorSaatIni, totalSoal;
+    int col_location, col_target;
+    QuestionSub [] allqsub;
+
+    private void saveJSONData() {
+
+        col_location = 1;
+        col_target = 2;
+        
+        // extracting from the GUI to json
+        QuestionSub qsub = new QuestionSub();
+        qsub.setNumber(nomorSaatIni);
+        qsub.setCorrect_answer(tableRender.getCheckedDataAsText(tableJawabanPGSoal, 1));
+        qsub.setQuestion_text(textareaPertanyaanSoal.getText());
+        qsub.setOps_a(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "A"));
+        qsub.setOps_b(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "B"));
+        qsub.setOps_c(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "C"));
+        qsub.setOps_d(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "D"));
+
+        allqsub[nomorSaatIni-1] = qsub;
+        
+        //new Gson().toJson(qsub);
+    }
+
+    private void proceedNextQuestion() {
+
+        // save into json
+        saveJSONData();
+
+        // is this in the last question?
+        prepareUI();
+    }
+    
+    private void prepareUI(){
+        nomorSaatIni++;
+        textareaPertanyaanSoal.setText("");
+        labelNomorSoal.setText("Nomor " + nomorSaatIni + " dari " + totalSoal + " Soal.");
+        tableRender.prepareEmptyQuestionData(tableJawabanPGSoal);
+
+    }
 
     private void renderQuestionData() {
         data.getIsi_soal();
@@ -248,13 +308,13 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel labelNomorSoal;
+    private javax.swing.JPanel panelCanvas;
     private javax.swing.JPanel panelConfigSoal;
     private javax.swing.JPanel panelEditSoal;
     private javax.swing.JPanel panelModelSoal;

@@ -252,7 +252,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
     }
 
     private void setAccess(String us, User.Type jenis) {
-        mainFrame.setAccess(us, jenis);
+        mainFrame.setAccess(us, jenis, "login");
     }
 
     int w = 300, h = 250;

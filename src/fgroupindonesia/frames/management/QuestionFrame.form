@@ -22,7 +22,7 @@
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="jPanel2">
+    <Container class="javax.swing.JPanel" name="panelCanvas">
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
           <BorderConstraints direction="Center"/>
@@ -34,7 +34,7 @@
         <Container class="javax.swing.JPanel" name="panelConfigSoal">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-              <CardConstraints cardName="card2"/>
+              <CardConstraints cardName="config_soal"/>
             </Constraint>
           </Constraints>
 
@@ -99,7 +99,7 @@
         <Container class="javax.swing.JPanel" name="panelEditSoal">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignCardLayout" value="org.netbeans.modules.form.compat2.layouts.DesignCardLayout$CardConstraintsDescription">
-              <CardConstraints cardName="card3"/>
+              <CardConstraints cardName="edit_soal"/>
             </Constraint>
           </Constraints>
 
@@ -166,6 +166,7 @@
                           <Properties>
                             <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                               <Table columnCount="3" rowCount="4">
+                                <Column editable="true" title="Jawaban" type="java.lang.Boolean"/>
                                 <Column editable="false" title="PG" type="java.lang.String">
                                   <Data value="A"/>
                                   <Data value="B"/>
@@ -173,22 +174,21 @@
                                   <Data value="D"/>
                                 </Column>
                                 <Column editable="true" title="Text" type="java.lang.String"/>
-                                <Column editable="true" title="Jawaban" type="java.lang.Boolean"/>
                               </Table>
                             </Property>
                             <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                               <TableColumnModel selectionModel="0">
+                                <Column maxWidth="55" minWidth="55" prefWidth="55" resizable="true">
+                                  <Title/>
+                                  <Editor/>
+                                  <Renderer/>
+                                </Column>
                                 <Column maxWidth="40" minWidth="40" prefWidth="40" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>
                                 </Column>
                                 <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                  <Title/>
-                                  <Editor/>
-                                  <Renderer/>
-                                </Column>
-                                <Column maxWidth="55" minWidth="55" prefWidth="55" resizable="true">
                                   <Title/>
                                   <Editor/>
                                   <Renderer/>

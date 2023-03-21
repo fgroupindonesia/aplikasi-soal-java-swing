@@ -1,4 +1,4 @@
 git add .
-git commit -m "Easy Access for kids & Parents on Menu (Top Bar)".
+git commit -m "Adding new Frames for Student Access and its logic".
 git push origin main
 git gc --prune

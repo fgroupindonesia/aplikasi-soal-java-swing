@@ -35,16 +35,16 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        buttonOpenQuestion = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        buttonOpenRewards = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        buttonOpenHistory = new javax.swing.JButton();
 
         setTitle("Menu Aktifitas");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
@@ -74,8 +74,13 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         jLabel1.setText("Soal Terkini");
         jPanel1.add(jLabel1, java.awt.BorderLayout.PAGE_END);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/write.png"))); // NOI18N
-        jPanel1.add(jButton1, java.awt.BorderLayout.CENTER);
+        buttonOpenQuestion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/write.png"))); // NOI18N
+        buttonOpenQuestion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOpenQuestionActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonOpenQuestion, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel1);
 
@@ -87,8 +92,13 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         jLabel2.setText("Melihat Imbalan");
         jPanel2.add(jLabel2, java.awt.BorderLayout.PAGE_END);
 
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/medal.png"))); // NOI18N
-        jPanel2.add(jButton2, java.awt.BorderLayout.CENTER);
+        buttonOpenRewards.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/medal.png"))); // NOI18N
+        buttonOpenRewards.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOpenRewardsActionPerformed(evt);
+            }
+        });
+        jPanel2.add(buttonOpenRewards, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel2);
 
@@ -113,8 +123,13 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         jLabel4.setText("Check Riwayat");
         jPanel4.add(jLabel4, java.awt.BorderLayout.PAGE_END);
 
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/time.png"))); // NOI18N
-        jPanel4.add(jButton4, java.awt.BorderLayout.CENTER);
+        buttonOpenHistory.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/time.png"))); // NOI18N
+        buttonOpenHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOpenHistoryActionPerformed(evt);
+            }
+        });
+        jPanel4.add(buttonOpenHistory, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel4);
 
@@ -124,15 +139,32 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
 
         mframe.logout();
-        
+
     }//GEN-LAST:event_formInternalFrameClosed
+
+    private void buttonOpenRewardsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenRewardsActionPerformed
+
+        mframe.displayMenuRewards();
+        this.dispose();
+
+    }//GEN-LAST:event_buttonOpenRewardsActionPerformed
+
+    private void buttonOpenHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenHistoryActionPerformed
+
+        mframe.displayHistory();
+        this.dispose();
+    }//GEN-LAST:event_buttonOpenHistoryActionPerformed
+
+    private void buttonOpenQuestionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOpenQuestionActionPerformed
+        mframe.displayStartQuestion();
+    }//GEN-LAST:event_buttonOpenQuestionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton buttonOpenHistory;
+    private javax.swing.JButton buttonOpenQuestion;
+    private javax.swing.JButton buttonOpenRewards;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

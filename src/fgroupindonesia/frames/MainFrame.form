@@ -60,11 +60,17 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Melihat Imbalan"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="checkRewardsMenuActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="startQuestionMenu">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Mulai Mengerjakan Soal"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startQuestionMenuActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="requestAdditionalQuestionMenu">
               <Properties>

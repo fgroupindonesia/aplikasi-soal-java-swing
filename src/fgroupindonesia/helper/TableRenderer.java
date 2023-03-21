@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 public class TableRenderer {
 
     public static final int DATA_NOT_AVAILABLE = -1;
-    
+
     public int getCheckedData(JTable table, int colIndex) {
         int val = -1;
 
@@ -25,6 +25,35 @@ public class TableRenderer {
             boolean b = (Boolean) this.getTableModel(table).getValueAt(i, 0);
             if (b) {
                 val = (Integer) this.getTableModel(table).getValueAt(i, colIndex);
+                break;
+            }
+        }
+
+        return val;
+    }
+
+    public String getCheckedDataAsText(JTable table, int colIndex) {
+        String val = null;
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            boolean b = (Boolean) this.getTableModel(table).getValueAt(i, 0);
+            if (b) {
+                val = (String) this.getTableModel(table).getValueAt(i, colIndex);
+                break;
+            }
+        }
+
+        return val;
+    }
+
+    public String getValueAt(JTable table, int col_target, int col_start, String identifier) {
+        String val = null;
+        String matched = null;
+
+        for (int i = 0; i < table.getRowCount(); i++) {
+            matched = (String) this.getTableModel(table).getValueAt(i, col_start);
+            if (matched.equalsIgnoreCase(identifier)) {
+                val = (String) this.getTableModel(table).getValueAt(i, col_target);
                 break;
             }
         }
@@ -45,6 +74,35 @@ public class TableRenderer {
         }
 
         return data;
+    }
+
+    public void prepareEmptyQuestionData(JTable table) {
+        clearData(table);
+
+        emptyQuestionDataSet(table);
+
+    }
+
+    private String getAlphabet(int i) {
+        if (i < 0) {
+            return "-" + getAlphabet(-i - 1);
+        }
+
+        int quot = i / 26;
+        int rem = i % 26;
+        char letter = (char) ((int) 'A' + rem);
+        if (quot == 0) {
+            return "" + letter;
+        } else {
+            return getAlphabet(quot - 1) + letter;
+        }
+    }
+
+    private void emptyQuestionDataSet(JTable table) {
+        for (int j = 0; j < 4; j++) {
+            Object[] data = {false, "", getAlphabet(j)};
+            this.getTableModel(table).addRow(data);
+        }
     }
 
     private void clearData(JTable table) {
@@ -74,7 +132,7 @@ public class TableRenderer {
             this.getTableModel(table).addRow(data);
         }
     }
-    
+
     public void render_history(JTable table, ArrayList<History> list) {
         clearData(table);
 

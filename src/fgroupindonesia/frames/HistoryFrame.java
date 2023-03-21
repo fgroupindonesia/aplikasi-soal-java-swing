@@ -1,6 +1,7 @@
 package fgroupindonesia.frames;
 
 import fgroupindonesia.data.History;
+import fgroupindonesia.data.User;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
 import fgroupindonesia.helper.TableRenderer;
@@ -21,10 +22,22 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         refresh();
     }
 
+    public HistoryFrame(User dataPerson) {
+        initComponents();
+        db = new DBConnection();
+        dataUser = dataPerson;
+        refresh();
+    }
+
+    User dataUser;
     DBConnection db;
     MainFrame mframe;
     ArrayList<History> list;
     TableRenderer tableRender;
+
+    public void setUser(User dataIn) {
+        dataUser = dataIn;
+    }
 
     public void setMainFrameReference(MainFrame mf) {
         mframe = mf;
@@ -32,7 +45,12 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
 
     public void refresh() {
         db.connect();
-        list = db.select_history_all();
+        if (dataUser != null) {
+            list = db.select_history_all(dataUser.getUsername());
+        } else {
+            list = db.select_history_all();
+        }
+
         tableRender = new TableRenderer();
         tableRender.render_history(tableDataManagement, list);
         labelTotalData.setText("Total Data : " + list.size());

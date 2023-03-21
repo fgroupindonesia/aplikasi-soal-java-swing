@@ -43,8 +43,7 @@ public class DBConnection {
             // create a connection to the database  
             conn = DriverManager.getConnection(url);
 
-            System.out.println("Connection to SQLite has been established.");
-
+            //System.out.println("Connection to SQLite has been established.");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -517,6 +516,8 @@ public class DBConnection {
 
         return item;
     }
+    
+    
 
     public ArrayList<AnswerQuestion> select_answer_question_all() {
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
@@ -542,6 +543,44 @@ public class DBConnection {
                 result.add(item);
             }
 
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at select_answer_question_all() " + e.getMessage());
+        }
+
+        return result;
+    }
+    
+    public ArrayList<AnswerQuestion> select_answer_question_specific(String namaSoal, String username) {
+        qb.addConditional(new Conditional("nama_student", username));
+        qb.addConditional(new Conditional("nama_soal", namaSoal));
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_ANSWER_QUESTION, AnswerQuestion.class);
+        
+        System.out.println("Perintahnya " + sql);
+        
+        ArrayList<AnswerQuestion> result = new ArrayList<AnswerQuestion>();
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+                AnswerQuestion item = new AnswerQuestion();
+                item.setId(rs.getInt("id"));
+                item.setNomor_soal(rs.getInt("nomor_soal"));
+                item.setJawaban_soal(rs.getString("jawaban_soal"));
+                item.setNama_soal(rs.getString("nama_soal"));
+                item.setNama_student(rs.getString("nama_student"));
+                item.setStatus(rs.getString("status"));
+                item.setTanggal(rs.getString("tanggal"));
+
+                result.add(item);
+            }
+
+            qb.clearAllConditions();
             this.disconnect();
         } catch (Exception e) {
             System.out.println("Error at select_answer_question_all() " + e.getMessage());
@@ -640,6 +679,8 @@ public class DBConnection {
 
         return item;
     }
+    
+    
 
     public ArrayList<Question> select_question_all() {
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
@@ -672,11 +713,77 @@ public class DBConnection {
 
         return result;
     }
+    
+    public ArrayList<Question> select_question_specific(String kategori) {
+        qb.addConditional(new Conditional("kategori", kategori));
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_QUESTION, Question.class);
+        ArrayList<Question> result = new ArrayList<Question>();
+        
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+                Question item = new Question();
+                item.setId(rs.getInt("id"));
+                item.setNama(rs.getString("nama"));
+                item.setJumlah_pertanyaan(rs.getInt("jumlah_pertanyaan"));
+                item.setKategori(rs.getString("kategori"));
+                item.setLimit_waktu(rs.getInt("limit_waktu"));
+                item.setIsi_soal(rs.getString("isi_soal"));
+                item.setTanggal(rs.getString("tanggal"));
+
+                result.add(item);
+            }
+
+            qb.clearAllConditions();
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at select_question_specific() " + e.getMessage());
+        }
+
+        return result;
+    }
 
     public Student select_student_specific(int id) {
         qb.addConditional(new Conditional("id", id));
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_STUDENT, null);
+        Student item = new Student();
+
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+
+                item.setId(rs.getInt("id"));
+                item.setNama(rs.getString("nama"));
+                item.setKelas(rs.getString("kelas"));
+                item.setTtl(rs.getString("ttl"));
+
+            }
+
+            qb.clearAllConditions();
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at select_student_specific() " + e.getMessage());
+        }
+
+        return item;
+    }
+
+    public Student select_student_specific(String username) {
+        qb.addConditional(new Conditional("nama", username));
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_STUDENT, Student.class);
         Student item = new Student();
 
         try {
@@ -736,6 +843,43 @@ public class DBConnection {
     public ArrayList<History> select_history_all() {
         //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
         String sql = qb.generate(Mode.SELECT_ALL, DBTableDefinition.TABLE_HISTORY, null);
+        ArrayList<History> result = new ArrayList<History>();
+        try {
+            this.connect();
+
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // loop through the result set  
+            while (rs.next()) {
+                History item = new History();
+                item.setId(rs.getInt("id"));
+                item.setUsername(rs.getString("username"));
+
+                if (rs.getString("jenis").equalsIgnoreCase("kids")) {
+                    item.setJenis(User.Type.kids);
+                } else {
+                    item.setJenis(User.Type.parents);
+                }
+
+                item.setTanggal(rs.getString("tanggal"));
+                item.setDescription(rs.getString("description"));
+
+                result.add(item);
+            }
+
+            this.disconnect();
+        } catch (Exception e) {
+            System.out.println("Error at select_student_all() " + e.getMessage());
+        }
+
+        return result;
+    }
+
+    public ArrayList<History> select_history_all(String username) {
+        //String sql = "INSERT INTO table_category(nama, tanggal) VALUES(?,?)";
+        qb.addConditional(new Conditional("username", username));
+        String sql = qb.generate(Mode.SELECT_SPECIFIC, DBTableDefinition.TABLE_HISTORY, History.class);
         ArrayList<History> result = new ArrayList<History>();
         try {
             this.connect();
