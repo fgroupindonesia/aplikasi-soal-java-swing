@@ -64,6 +64,7 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
                 formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -82,11 +83,11 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "#", "Nama Soal", "Jumlah Pertanyaan", "Kategori", "Tanggal"
+                "#", "ID", "Nama Soal", "Jumlah Pertanyaan", "Kategori", "Tanggal"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -98,6 +99,9 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
             tableDataManagement.getColumnModel().getColumn(0).setMinWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setPreferredWidth(45);
             tableDataManagement.getColumnModel().getColumn(0).setMaxWidth(45);
+            tableDataManagement.getColumnModel().getColumn(1).setMinWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setPreferredWidth(0);
+            tableDataManagement.getColumnModel().getColumn(1).setMaxWidth(0);
         }
 
         jPanel2.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -185,9 +189,13 @@ public class QuestionManagementFrame extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
 
-         mframe.displayMenuManagement();
-        
+
     }//GEN-LAST:event_formInternalFrameClosed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        this.dispose();
+        mframe.displayMenuManagement();
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -13,8 +13,8 @@ public class QueryBuilder {
     ArrayList<Conditional> conditionals;
     String skippedColumn;
     Object dataObject;
-    
-    public void clearAllConditions(){
+
+    public void clearAllConditions() {
         conditionals.clear();
     }
 
@@ -58,18 +58,23 @@ public class QueryBuilder {
     private String getConditionalQuery() {
         StringBuilder stb = new StringBuilder();
 
-        for (int i =0; i < conditionals.size(); i ++) {
+        for (int i = 0; i < conditionals.size(); i++) {
             Conditional condt = conditionals.get(i);
             if (condt != null) {
-                
+
                 stb.append(condt.getColumn());
-                stb.append("=");
-                stb.append(getValueSafe(condt.getValue()));
-            
-                if(i<conditionals.size()-1){
+                if (!condt.isAlike()) {
+                    stb.append("=");
+                    stb.append(getValueSafe(condt.getValue()));
+                }else{
+                    stb.append(" LIKE ");
+                    stb.append(getValueSafe("%" + condt.getValue() + "%"));
+                }
+                
+                if (i < conditionals.size() - 1) {
                     stb.append(" AND ");
                 }
-            
+
             }
         }
 

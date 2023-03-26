@@ -64,6 +64,7 @@ public class RewardsManagementFrame extends javax.swing.JInternalFrame {
                 formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -82,14 +83,14 @@ public class RewardsManagementFrame extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-                "#", "Id", "Nama", "Filename"
+                "#", "Id", "Nama", "Filename", "Jenis"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                true, false, true, true
+                true, false, true, true, true
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -196,9 +197,12 @@ public class RewardsManagementFrame extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
 
-         mframe.displayMenuManagement();
-        
     }//GEN-LAST:event_formInternalFrameClosed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        this.dispose();
+        mframe.displayMenuManagement();
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -8,6 +8,7 @@ package fgroupindonesia.data;
 public class Conditional {
     private String column;
     private String value;
+    private boolean alike;
 
     public Conditional(){
         
@@ -21,6 +22,12 @@ public class Conditional {
     public Conditional(String c, String v){
         column = c;
         value = v;
+    }
+    
+     public Conditional(String c, String v, boolean b){
+        column = c;
+        value = v;
+        alike = b;
     }
     
     /**
@@ -49,5 +56,19 @@ public class Conditional {
      */
     public void setValue(String value) {
         this.value = value;
+    }
+
+    /**
+     * @return the alike
+     */
+    public boolean isAlike() {
+        return alike;
+    }
+
+    /**
+     * @param alike the alike to set
+     */
+    public void setAlike(boolean alike) {
+        this.alike = alike;
     }
 }

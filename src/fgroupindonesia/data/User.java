@@ -11,6 +11,7 @@ public class User {
         parents
     }
     
+    private Type jenis;
     private String username;
     private String pass;
 
@@ -40,6 +41,20 @@ public class User {
      */
     public void setPass(String pass) {
         this.pass = pass;
+    }
+
+    /**
+     * @return the jenis
+     */
+    public Type getJenis() {
+        return jenis;
+    }
+
+    /**
+     * @param jenis the jenis to set
+     */
+    public void setJenis(Type jenis) {
+        this.jenis = jenis;
     }
     
 }

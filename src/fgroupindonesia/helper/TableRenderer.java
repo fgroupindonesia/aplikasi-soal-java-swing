@@ -100,7 +100,7 @@ public class TableRenderer {
 
     private void emptyQuestionDataSet(JTable table) {
         for (int j = 0; j < 4; j++) {
-            Object[] data = {false, "", getAlphabet(j)};
+            Object[] data = {false, getAlphabet(j), ""};
             this.getTableModel(table).addRow(data);
         }
     }
@@ -146,7 +146,7 @@ public class TableRenderer {
         clearData(table);
 
         for (Rewards cat : list) {
-            Object[] data = {false, cat.getId(), cat.getNama(), cat.getFilename()};
+            Object[] data = {false, cat.getId(), cat.getNama(), cat.getFilename(), cat.getJenis()};
             this.getTableModel(table).addRow(data);
         }
     }

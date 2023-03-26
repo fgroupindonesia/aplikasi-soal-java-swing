@@ -9,6 +9,7 @@ public class Rewards {
     private int id;
     private String nama;
     private String filename;
+    private String jenis;
 
     /**
      * @return the id
@@ -50,5 +51,19 @@ public class Rewards {
      */
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    /**
+     * @return the jenis
+     */
+    public String getJenis() {
+        return jenis;
+    }
+
+    /**
+     * @param jenis the jenis to set
+     */
+    public void setJenis(String jenis) {
+        this.jenis = jenis;
     }
 }

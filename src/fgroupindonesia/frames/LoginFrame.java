@@ -29,7 +29,8 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
     public void setMainFrameReference(MainFrame mf) {
         mainFrame = mf;
-
+        // showing the beginning of the card
+        cardLayout.show(container, "login as");
     }
 
     public LoginFrame() {
@@ -53,80 +54,75 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         panelUserType = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        kidsLabel = new javax.swing.JLabel();
-        parentsLabel = new javax.swing.JLabel();
+        buttonAnak = new javax.swing.JButton();
+        buttonOrangTua = new javax.swing.JButton();
         panelLogin = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         textfieldParentUsername = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         textfieldPasswordParent = new javax.swing.JPasswordField();
+        jLabel5 = new javax.swing.JLabel();
         buttonLogin = new javax.swing.JButton();
         panelKidsDetail = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        labelPerintahKetik = new javax.swing.JLabel();
         textfieldNamaKamu = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
         buttonMulai = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
 
         setTitle("Login");
+        setPreferredSize(new java.awt.Dimension(500, 300));
         getContentPane().setLayout(new java.awt.CardLayout());
 
         panelUserType.setLayout(new java.awt.GridLayout(3, 1));
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Login Sebagai...");
         jLabel3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         panelUserType.add(jLabel3);
 
-        jPanel1.setLayout(new java.awt.GridLayout(1, 2));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        jPanel1.setLayout(new java.awt.GridLayout(1, 2, 15, 0));
 
-        kidsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        kidsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        kidsLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/user.png"))); // NOI18N
-        kidsLabel.setText("Anak");
-        kidsLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        kidsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        kidsLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        kidsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                kidsLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                kidsLabelMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                kidsLabelMouseExited(evt);
+        buttonAnak.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        buttonAnak.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/user.png"))); // NOI18N
+        buttonAnak.setText("Anak");
+        buttonAnak.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buttonAnak.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonAnak.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonAnak.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonAnakActionPerformed(evt);
             }
         });
-        jPanel1.add(kidsLabel);
+        jPanel1.add(buttonAnak);
 
-        parentsLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        parentsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        parentsLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/group.png"))); // NOI18N
-        parentsLabel.setText("Orang Tua");
-        parentsLabel.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        parentsLabel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        parentsLabel.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        parentsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                parentsLabelMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                parentsLabelMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                parentsLabelMouseExited(evt);
+        buttonOrangTua.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        buttonOrangTua.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/group.png"))); // NOI18N
+        buttonOrangTua.setText("Orang Tua");
+        buttonOrangTua.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        buttonOrangTua.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        buttonOrangTua.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        buttonOrangTua.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonOrangTuaActionPerformed(evt);
             }
         });
-        jPanel1.add(parentsLabel);
+        jPanel1.add(buttonOrangTua);
 
         panelUserType.add(jPanel1);
 
         getContentPane().add(panelUserType, "login as");
 
-        panelLogin.setLayout(new java.awt.GridLayout(5, 1));
+        panelLogin.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        panelLogin.setLayout(new java.awt.GridLayout(6, 1));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Username : ");
         panelLogin.add(jLabel1);
 
+        textfieldParentUsername.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         textfieldParentUsername.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textfieldParentUsernameActionPerformed(evt);
@@ -134,10 +130,20 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         });
         panelLogin.add(textfieldParentUsername);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Password : ");
         panelLogin.add(jLabel2);
 
-        textfieldPasswordParent.setText("jPasswordField1");
+        textfieldPasswordParent.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        textfieldPasswordParent.setText("abcd");
+        textfieldPasswordParent.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                textfieldPasswordParentFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                textfieldPasswordParentFocusLost(evt);
+            }
+        });
         textfieldPasswordParent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textfieldPasswordParentActionPerformed(evt);
@@ -145,6 +151,11 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         });
         panelLogin.add(textfieldPasswordParent);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        panelLogin.add(jLabel5);
+
+        buttonLogin.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        buttonLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/right.png"))); // NOI18N
         buttonLogin.setText("Login");
         buttonLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -155,64 +166,56 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
         getContentPane().add(panelLogin, "login form");
 
-        panelKidsDetail.setLayout(new java.awt.GridLayout(3, 1));
+        panelKidsDetail.setBorder(javax.swing.BorderFactory.createEmptyBorder(15, 20, 15, 20));
+        panelKidsDetail.setLayout(new java.awt.GridLayout(6, 1));
 
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Ketik nama kamu disini...");
-        jLabel4.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        panelKidsDetail.add(jLabel4);
+        labelPerintahKetik.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labelPerintahKetik.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        labelPerintahKetik.setText("Ketik nama kamu disini...");
+        labelPerintahKetik.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        panelKidsDetail.add(labelPerintahKetik);
 
-        textfieldNamaKamu.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        textfieldNamaKamu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         textfieldNamaKamu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 textfieldNamaKamuActionPerformed(evt);
             }
         });
+        textfieldNamaKamu.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                textfieldNamaKamuKeyTyped(evt);
+            }
+        });
         panelKidsDetail.add(textfieldNamaKamu);
 
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        panelKidsDetail.add(jLabel6);
+
         buttonMulai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        buttonMulai.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/right.png"))); // NOI18N
         buttonMulai.setText("Mulai!");
+        buttonMulai.setEnabled(false);
+        buttonMulai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonMulaiActionPerformed(evt);
+            }
+        });
         panelKidsDetail.add(buttonMulai);
+
+        jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel7.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        panelKidsDetail.add(jLabel7);
 
         getContentPane().add(panelKidsDetail, "kids detail");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void kidsLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kidsLabelMouseEntered
-        Highlight.onFocus(kidsLabel);
-    }//GEN-LAST:event_kidsLabelMouseEntered
-
-    private void kidsLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kidsLabelMouseExited
-        Highlight.onLost(kidsLabel);
-    }//GEN-LAST:event_kidsLabelMouseExited
-
-    private void parentsLabelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parentsLabelMouseEntered
-        Highlight.onFocus(parentsLabel);
-    }//GEN-LAST:event_parentsLabelMouseEntered
-
-    private void parentsLabelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parentsLabelMouseExited
-        Highlight.onLost(kidsLabel);
-    }//GEN-LAST:event_parentsLabelMouseExited
-
-    private void kidsLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kidsLabelMouseClicked
-        cardLayout.show(container, "kids detail");
-    }//GEN-LAST:event_kidsLabelMouseClicked
-
-    private void parentsLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parentsLabelMouseClicked
-
-        cardLayout.show(container, "login form");
-    }//GEN-LAST:event_parentsLabelMouseClicked
-
     private void textfieldNamaKamuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textfieldNamaKamuActionPerformed
 
-        if (textfieldNamaKamu.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "input nama yang bener ya!");
-        } else {
-            setAccess(textfieldNamaKamu.getText(), User.Type.kids);
-            mainFrame.displayMenuActivity();
-            this.dispose();
-        }
+        loginProcessAsStudent();
+
     }//GEN-LAST:event_textfieldNamaKamuActionPerformed
 
     private void buttonLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonLoginActionPerformed
@@ -232,6 +235,68 @@ public class LoginFrame extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_textfieldPasswordParentActionPerformed
 
+    private void textfieldPasswordParentFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textfieldPasswordParentFocusGained
+
+        if (textfieldPasswordParent.getText().equalsIgnoreCase("abcd")) {
+            textfieldPasswordParent.setText("");
+        }
+
+    }//GEN-LAST:event_textfieldPasswordParentFocusGained
+
+    private void textfieldPasswordParentFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_textfieldPasswordParentFocusLost
+
+        if (textfieldPasswordParent.getText().isEmpty()) {
+            textfieldPasswordParent.setText("abcd");
+        }
+
+    }//GEN-LAST:event_textfieldPasswordParentFocusLost
+
+    private void buttonAnakActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonAnakActionPerformed
+        cardLayout.show(container, "kids detail");
+        textfieldNamaKamu.requestFocus();
+
+    }//GEN-LAST:event_buttonAnakActionPerformed
+
+    private void buttonOrangTuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonOrangTuaActionPerformed
+        cardLayout.show(container, "login form");
+        textfieldParentUsername.requestFocus();
+    }//GEN-LAST:event_buttonOrangTuaActionPerformed
+
+    private void buttonMulaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonMulaiActionPerformed
+
+        loginProcessAsStudent();
+
+
+    }//GEN-LAST:event_buttonMulaiActionPerformed
+
+    private void textfieldNamaKamuKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_textfieldNamaKamuKeyTyped
+
+        if (!textfieldNamaKamu.getText().isEmpty()) {
+            labelPerintahKetik.setText("ya betul, ketik nama kamu lalu tekan ENTER!");
+            buttonMulai.setEnabled(true);
+        } else {
+            buttonMulai.setEnabled(false);
+            labelPerintahKetik.setText("Ketik nama kamu disini...");
+        }
+
+    }//GEN-LAST:event_textfieldNamaKamuKeyTyped
+
+    private void loginProcessAsStudent() {
+
+        if (!textfieldNamaKamu.getText().isEmpty()) {
+            boolean h = db.verify_student(textfieldNamaKamu.getText());
+
+            if (h) {
+                mainFrame.setAccess(textfieldNamaKamu.getText(), User.Type.kids, "login");
+                mainFrame.displayMenuActivity();
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(null, "nama kamu salah ketik, coba ulang lagi!");
+            }
+
+        }
+    }
+
     private void loginProcess() {
 
         String username = textfieldParentUsername.getText();
@@ -240,8 +305,7 @@ public class LoginFrame extends javax.swing.JInternalFrame {
         System.out.println("username " + username + " dan pass " + pass);
 
         if (db.verify_user(username, pass)) {
-            setAccess(textfieldParentUsername.getText(), User.Type.parents);
-
+            mainFrame.setAccess("admin", User.Type.parents, "login");
             mainFrame.displayMenuManagement();
 
             this.dispose();
@@ -249,10 +313,6 @@ public class LoginFrame extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Ulangi lagi username / password salah!");
         }
 
-    }
-
-    private void setAccess(String us, User.Type jenis) {
-        mainFrame.setAccess(us, jenis, "login");
     }
 
     int w = 300, h = 250;
@@ -265,18 +325,21 @@ public class LoginFrame extends javax.swing.JInternalFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonAnak;
     private javax.swing.JButton buttonLogin;
     private javax.swing.JButton buttonMulai;
+    private javax.swing.JButton buttonOrangTua;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JLabel kidsLabel;
+    private javax.swing.JLabel labelPerintahKetik;
     private javax.swing.JPanel panelKidsDetail;
     private javax.swing.JPanel panelLogin;
     private javax.swing.JPanel panelUserType;
-    private javax.swing.JLabel parentsLabel;
     private javax.swing.JTextField textfieldNamaKamu;
     private javax.swing.JTextField textfieldParentUsername;
     private javax.swing.JPasswordField textfieldPasswordParent;

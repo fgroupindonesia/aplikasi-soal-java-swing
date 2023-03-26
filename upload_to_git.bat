@@ -1,4 +1,4 @@
 git add .
-git commit -m "Adding new Frames for Student Access and its logic".
+git commit -m "fixing new management bugs".
 git push origin main
 git gc --prune

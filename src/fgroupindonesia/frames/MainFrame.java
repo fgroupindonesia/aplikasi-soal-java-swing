@@ -14,13 +14,15 @@ import fgroupindonesia.frames.management.RewardsFrame;
 import fgroupindonesia.frames.management.RewardsManagementFrame;
 import fgroupindonesia.frames.management.StudentFrame;
 import fgroupindonesia.frames.management.StudentManagementFrame;
-import fgroupindonesia.helper.CustomJDesktopPane;
+import fgroupindonesia.helper.fx.CustomJDesktopPane;
 import fgroupindonesia.helper.DBConnection;
 
 import fgroupindonesia.helper.SystemPath;
+import fgroupindonesia.helper.ThreadDelay;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.Timer;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
@@ -37,17 +39,38 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form LoginFrame
      */
     JDesktopPane desktop;
-    User.Type akses;
+
     User dataUser;
     History dataHistory;
     DBConnection db;
     BufferedImage myBackground;
 
+    StudentManagementFrame stm_frame;
+    RewardsManagementFrame rtm_frame;
+    QuestionManagementFrame qm_frame;
+    CategoryManagementFrame ctm_frame;
+    AnswerQuestionManagementFrame aqm_frame;
+
+    HistoryFrame historyFrame;
+    LoginFrame loginFrame;
+    MenuActivityFrame menuActivityFrame;
+    MenuManagementFrame menuManagement;
+
+    StudentQuestionFrame studentQuestionFrame;
+    MenuRewardsFrame menuRewardsFrame;
+    AnswerQuestionFrame answerQuestionFrame;
+    CategoryFrame categoryFrame;
+    RewardsFrame rewardsFrame;
+    StudentFrame studentFrame;
+    QuestionFrame questionFrame;
+
     private void openMenuAccess(boolean b) {
         aktifitasMenu.setEnabled(b);
 
-        if (akses != User.Type.kids) {
-            managementMenu.setEnabled(b);
+        if (dataUser != null) {
+            if (dataUser.getJenis() != User.Type.kids) {
+                managementMenu.setEnabled(b);
+            }
         }
     }
 
@@ -55,13 +78,14 @@ public class MainFrame extends javax.swing.JFrame {
         dataUser = new User();
         dataUser.setUsername(nama);
 
-        akses = jenis;
+        dataUser.setJenis(jenis);
         dataHistory = new History(nama, jenis);
         dataHistory.setDescription(desc);
 
         loginMenu.setText(desc + " dari (" + jenis + ")");
 
         db.insert_history(dataHistory);
+
         openMenuAccess(true);
     }
 
@@ -69,11 +93,21 @@ public class MainFrame extends javax.swing.JFrame {
         this.setIconImage(new ImageIcon(SystemPath.getCompletePath("logo.png")).getImage());
     }
 
+    public void automaticallyShowLogin() {
+
+        Timer n = new Timer();
+        n.schedule(new ThreadDelay(this), 3000);
+
+    }
+
     public MainFrame() {
         initComponents();
         updateImageIcon();
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setDefaultLookAndFeelDecorated(true);
+
+        // show the login
+        automaticallyShowLogin();
 
         // first time
         db = new DBConnection();
@@ -158,6 +192,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         aktifitasMenu.setMnemonic('A');
         aktifitasMenu.setText("Aktifitas");
+        aktifitasMenu.setEnabled(false);
 
         historyMenu.setMnemonic('H');
         historyMenu.setText("Check Riwayat");
@@ -191,6 +226,7 @@ public class MainFrame extends javax.swing.JFrame {
 
         managementMenu.setMnemonic('M');
         managementMenu.setText("Manajemen");
+        managementMenu.setEnabled(false);
 
         categoryManagementMenu.setMnemonic('K');
         categoryManagementMenu.setText("Kategori");
@@ -259,10 +295,7 @@ public class MainFrame extends javax.swing.JFrame {
     private void loginMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loginMenuActionPerformed
 
         if (loginMenu.getText().contains("Login")) {
-            LoginFrame frame = new LoginFrame();
-            deployDesktop(frame);
-            frame.setMainFrameReference(this);
-
+            displayLogin();
         } else {
             logout();
         }
@@ -315,141 +348,180 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_startQuestionMenuActionPerformed
 
     public void displayStartQuestion() {
-        StudentQuestionFrame qframe = new StudentQuestionFrame();
-        deployDesktop(qframe);
-        qframe.startFor(dataUser);
-        qframe.setMainFrameReference(this);
+
+        studentQuestionFrame = new StudentQuestionFrame();
+
+        deployDesktop(studentQuestionFrame);
+        studentQuestionFrame.startFor(dataUser);
+        studentQuestionFrame.setMainFrameReference(this);
     }
 
     public void displayHistory() {
-        HistoryFrame frame;
 
-        if (akses == User.Type.kids) {
-            frame = new HistoryFrame(dataUser);
+        if (dataUser.getJenis() == User.Type.kids) {
+            historyFrame = new HistoryFrame(dataUser);
         } else {
-            frame = new HistoryFrame();
+            historyFrame = new HistoryFrame();
         }
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        deployDesktop(historyFrame);
+        historyFrame.setMainFrameReference(this);
     }
 
-    StudentManagementFrame stm_frame;
-    RewardsManagementFrame rtm_frame;
-    QuestionManagementFrame qm_frame;
-    CategoryManagementFrame ctm_frame;
-    AnswerQuestionManagementFrame aqm_frame;
-
     public void displayManagementStudent() {
+
         stm_frame = new StudentManagementFrame();
+
         deployDesktop(stm_frame);
         stm_frame.setMainFrameReference(this);
     }
 
     public void displayManagementRewards() {
+
         rtm_frame = new RewardsManagementFrame();
+
         deployDesktop(rtm_frame);
         rtm_frame.setMainFrameReference(this);
     }
 
     public void displayManagementCategory() {
+
         ctm_frame = new CategoryManagementFrame();
+
         deployDesktop(ctm_frame);
         ctm_frame.setMainFrameReference(this);
     }
 
     public void displayManagementAnswerQuestion() {
+
         aqm_frame = new AnswerQuestionManagementFrame();
+
         deployDesktop(aqm_frame);
         aqm_frame.setMainFrameReference(this);
     }
 
     public void displayManagementQuestion() {
+
         qm_frame = new QuestionManagementFrame();
+
         deployDesktop(qm_frame);
         qm_frame.setMainFrameReference(this);
     }
 
     public void displayStudentForm() {
-        StudentFrame frame = new StudentFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        studentFrame = new StudentFrame();
+
+        deployDesktop(studentFrame);
+        studentFrame.setMainFrameReference(this);
     }
 
     public void displayCategoryForm(int id) {
-        CategoryFrame frame = new CategoryFrame();
-        frame.setEditMode(id);
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        categoryFrame.setEditMode(id);
+        deployDesktop(categoryFrame);
+        categoryFrame.setMainFrameReference(this);
     }
 
     public void displayAnswerQuestionForm(int id) {
-        AnswerQuestionFrame frame = new AnswerQuestionFrame();
-        frame.setEditMode(id);
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        answerQuestionFrame.setEditMode(id);
+        deployDesktop(answerQuestionFrame);
+        answerQuestionFrame.setMainFrameReference(this);
     }
 
     public void displayQuestionForm(int id) {
-        QuestionFrame frame = new QuestionFrame();
-        frame.setEditMode(id);
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        questionFrame.setEditMode(id);
+        deployDesktop(questionFrame);
+        questionFrame.setMainFrameReference(this);
     }
 
     public void displayStudentForm(int id) {
-        StudentFrame frame = new StudentFrame();
-        frame.setEditMode(id);
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        studentFrame.setEditMode(id);
+        deployDesktop(studentFrame);
+        studentFrame.setMainFrameReference(this);
     }
 
     public void displayRewardsForm(int id) {
-        RewardsFrame frame = new RewardsFrame();
-        frame.setEditMode(id);
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+        rewardsFrame.setEditMode(id);
+        deployDesktop(rewardsFrame);
+        rewardsFrame.setMainFrameReference(this);
     }
 
     public void displayRewardsForm() {
-        RewardsFrame frame = new RewardsFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        rewardsFrame = new RewardsFrame();
+
+        deployDesktop(rewardsFrame);
+        rewardsFrame.setMainFrameReference(this);
     }
 
     public void displayQuestionForm() {
-        QuestionFrame frame = new QuestionFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        questionFrame = new QuestionFrame();
+
+        deployDesktop(questionFrame);
+        questionFrame.setMainFrameReference(this);
     }
 
     public void displayCategoryForm() {
-        CategoryFrame frame = new CategoryFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        categoryFrame = new CategoryFrame();
+
+        deployDesktop(categoryFrame);
+        categoryFrame.setMainFrameReference(this);
     }
 
     public void displayAnswerQuestionForm() {
-        AnswerQuestionFrame frame = new AnswerQuestionFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        answerQuestionFrame = new AnswerQuestionFrame();
+
+        deployDesktop(answerQuestionFrame);
+        answerQuestionFrame.setMainFrameReference(this);
     }
 
     public void displayMenuRewards() {
-        MenuRewardsFrame frame = new MenuRewardsFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        menuRewardsFrame = new MenuRewardsFrame();
+
+        deployDesktop(menuRewardsFrame);
+        menuRewardsFrame.setMainFrameReference(this);
     }
 
     public void displayMenuManagement() {
-        MenuManagementFrame frame = new MenuManagementFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        menuManagement = new MenuManagementFrame();
+
+        deployDesktop(menuManagement);
+        menuManagement.setMainFrameReference(this);
     }
 
     public void displayMenuActivity() {
-        MenuActivityFrame frame = new MenuActivityFrame();
-        deployDesktop(frame);
-        frame.setMainFrameReference(this);
+
+        menuActivityFrame = new MenuActivityFrame();
+
+        deployDesktop(menuActivityFrame);
+        menuActivityFrame.setMainFrameReference(this);
+    }
+
+    public void displayLogin() {
+
+        loginFrame = new LoginFrame();
+
+        deployDesktop(loginFrame);
+        loginFrame.setMainFrameReference(this);
+
+    }
+
+    private boolean frameisAlreadyAdded(JInternalFrame fr) {
+        boolean stat = false;
+
+        for (JInternalFrame jf : desktop.getAllFrames()) {
+            if (jf.equals(fr)) {
+                stat = true;
+                break;
+            }
+        }
+
+        return stat;
     }
 
     private void deployDesktop(JInternalFrame frame) {
@@ -459,7 +531,9 @@ public class MainFrame extends javax.swing.JFrame {
 
         setCenterInternal(frame);
 
-        desktop.add(frame);
+        if (!frameisAlreadyAdded(frame)) {
+            desktop.add(frame);
+        }
 
         try {
             frame.setSelected(true);

@@ -11,6 +11,9 @@
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
   </SyntheticProperties>
+  <Events>
+    <EventHandler event="internalFrameClosing" listener="javax.swing.event.InternalFrameListener" parameters="javax.swing.event.InternalFrameEvent" handler="formInternalFrameClosing"/>
+  </Events>
   <AuxValues>
     <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
@@ -172,9 +175,6 @@
                       <SubComponents>
                         <Component class="javax.swing.JRadioButton" name="radioButtonSoalMode1_PG_A1">
                           <Properties>
-                            <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                              <ComponentRef name="default"/>
-                            </Property>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="buttonGroupPilihanGandaSoalMode_1"/>
                             </Property>
@@ -186,9 +186,6 @@
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="radioButtonSoalMode1_PG_B1">
                           <Properties>
-                            <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                              <ComponentRef name="default"/>
-                            </Property>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="buttonGroupPilihanGandaSoalMode_1"/>
                             </Property>
@@ -200,9 +197,6 @@
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="radioButtonSoalMode1_PG_C1">
                           <Properties>
-                            <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                              <ComponentRef name="default"/>
-                            </Property>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="buttonGroupPilihanGandaSoalMode_1"/>
                             </Property>
@@ -214,9 +208,6 @@
                         </Component>
                         <Component class="javax.swing.JRadioButton" name="radioButtonSoalMode1_PG_D1">
                           <Properties>
-                            <Property name="model" type="javax.swing.ButtonModel" editor="org.netbeans.modules.form.ComponentChooserEditor">
-                              <ComponentRef name="default"/>
-                            </Property>
                             <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
                               <ComponentRef name="buttonGroupPilihanGandaSoalMode_1"/>
                             </Property>

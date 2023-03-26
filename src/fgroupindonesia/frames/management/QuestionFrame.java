@@ -7,9 +7,11 @@ import fgroupindonesia.data.Question;
 import fgroupindonesia.data.QuestionSub;
 import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
+import fgroupindonesia.helper.DateHelper;
 import fgroupindonesia.helper.TableRenderer;
 import java.awt.CardLayout;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -26,6 +28,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         renderKategori();
         tableRender = new TableRenderer();
         card = (CardLayout) panelCanvas.getLayout();
+
     }
 
     private void renderKategori() {
@@ -61,8 +64,8 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         data.setJumlah_pertanyaan((Integer) spinnerJumlahPertanyaan.getValue());
         data.setNama(textfieldNamaSoal.getText());
         data.setKategori(comboboxKategori.getSelectedItem().toString());
-        data.setLimit_waktu((Integer) comboboxLimitWaktu.getSelectedItem());
-
+        data.setLimit_waktu((Integer.parseInt(comboboxLimitWaktu.getSelectedItem().toString())));
+        data.setTanggal(new DateHelper().getToday());
     }
 
     @SuppressWarnings("unchecked")
@@ -104,22 +107,32 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
         panelConfigSoal.setLayout(new java.awt.GridLayout(8, 1));
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel1.setText("Nama Soal : ");
         panelConfigSoal.add(jLabel1);
+
+        textfieldNamaSoal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         panelConfigSoal.add(textfieldNamaSoal);
 
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Jumlah Pertanyaan :");
         panelConfigSoal.add(jLabel2);
+
+        spinnerJumlahPertanyaan.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         panelConfigSoal.add(spinnerJumlahPertanyaan);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Kategori : ");
         panelConfigSoal.add(jLabel3);
 
+        comboboxKategori.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         panelConfigSoal.add(comboboxKategori);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Limit Waktu : (Menit)");
         panelConfigSoal.add(jLabel4);
 
+        comboboxLimitWaktu.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         comboboxLimitWaktu.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "10", "15", "20", "25", "30" }));
         panelConfigSoal.add(comboboxLimitWaktu);
 
@@ -134,11 +147,15 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         jScrollPane1.setBorder(javax.swing.BorderFactory.createTitledBorder("Text Soal"));
 
         textareaPertanyaanSoal.setColumns(20);
+        textareaPertanyaanSoal.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         textareaPertanyaanSoal.setRows(5);
         jScrollPane1.setViewportView(textareaPertanyaanSoal);
 
         panelModelSoal1.add(jScrollPane1, java.awt.BorderLayout.PAGE_START);
 
+        jScrollPane2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+
+        tableJawabanPGSoal.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         tableJawabanPGSoal.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, "A", null},
@@ -211,6 +228,7 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
         getContentPane().add(panelCanvas, java.awt.BorderLayout.CENTER);
 
         buttonKembali.setText("Kembali <<");
+        buttonKembali.setEnabled(false);
         jPanel1.add(buttonKembali);
 
         buttonSelanjutnya.setText(">> Selanjutnya");
@@ -228,65 +246,106 @@ public class QuestionFrame extends javax.swing.JInternalFrame {
 
     private void buttonSelanjutnyaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSelanjutnyaActionPerformed
 
-        if (data != null) {
+        if (data != null && allqsub == null) {
             // coming from editing mode
             renderQuestionData();
-        } else if (NavigasiQuestion.current_index == NavigasiQuestion.CONFIG_SOAL) {
+        } else if (data == null && NavigasiQuestion.current_index == NavigasiQuestion.CONFIG_SOAL) {
             // coming from new data
+            data = new Question();
 
             card.show(panelCanvas, "edit_soal");
             buttonKembali.setEnabled(true);
             buttonSelanjutnya.setEnabled(true);
-            
+
+            // obtain the first data for this question
+            obtainFormValues();
+
             // prepare empty array with the following numbers
-            allqsub = new QuestionSub[(Integer)spinnerJumlahPertanyaan.getValue()];
+            allqsub = new QuestionSub[data.getJumlah_pertanyaan()];
             prepareUI();
-            
+
+            // set the current index post
+            NavigasiQuestion.current_index = NavigasiQuestion.EDIT_SOAL;
+
         } else if (NavigasiQuestion.current_index == NavigasiQuestion.EDIT_SOAL) {
 
-            proceedNextQuestion();
+            if (nomorSaatIni < data.getJumlah_pertanyaan()) {
+                proceedNextQuestion();
+            } else {
+                // lastly
+                saveJSONData();
+                // store into the real data object
+                data.setIsi_soal(new Gson().toJson(allqsub));
+
+                db.insert_question(data);
+                JOptionPane.showMessageDialog(null, "Question Saved succesfully!");
+                this.dispose();
+
+                mframe.refresh_questionManagement();
+            }
         }
 
     }//GEN-LAST:event_buttonSelanjutnyaActionPerformed
 
     int nomorSaatIni, totalSoal;
     int col_location, col_target;
-    QuestionSub [] allqsub;
+    QuestionSub[] allqsub;
 
-    private void saveJSONData() {
+    private boolean isQuestionFilled() {
+        boolean ready = false;
 
+        String ans = tableRender.getCheckedDataAsText(tableJawabanPGSoal, 1);
+
+        if (!textareaPertanyaanSoal.getText().isEmpty() && ans != null) {
+            ready = true;
+        }
+
+        return ready;
+    }
+
+    private boolean saveJSONData() {
+
+        boolean savedProperly = false;
         col_location = 1;
         col_target = 2;
-        
-        // extracting from the GUI to json
-        QuestionSub qsub = new QuestionSub();
-        qsub.setNumber(nomorSaatIni);
-        qsub.setCorrect_answer(tableRender.getCheckedDataAsText(tableJawabanPGSoal, 1));
-        qsub.setQuestion_text(textareaPertanyaanSoal.getText());
-        qsub.setOps_a(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "A"));
-        qsub.setOps_b(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "B"));
-        qsub.setOps_c(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "C"));
-        qsub.setOps_d(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "D"));
 
-        allqsub[nomorSaatIni-1] = qsub;
-        
+        if (isQuestionFilled()) {
+            // extracting from the GUI to json
+            QuestionSub qsub = new QuestionSub();
+            qsub.setNumber(nomorSaatIni);
+            qsub.setCorrect_answer(tableRender.getCheckedDataAsText(tableJawabanPGSoal, 1));
+            qsub.setQuestion_text(textareaPertanyaanSoal.getText());
+            qsub.setOps_a(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "A"));
+            qsub.setOps_b(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "B"));
+            qsub.setOps_c(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "C"));
+            qsub.setOps_d(tableRender.getValueAt(tableJawabanPGSoal, col_target, col_location, "D"));
+
+            allqsub[nomorSaatIni - 1] = qsub;
+            savedProperly = true;
+        }
         //new Gson().toJson(qsub);
+        return savedProperly;
     }
 
     private void proceedNextQuestion() {
 
         // save into json
-        saveJSONData();
+        if (saveJSONData()) {
+            // is this in the last question?
+            prepareUI();
+        } else {
+            JOptionPane.showMessageDialog(null, "isi dulu question dengan lengkap!");
+        }
 
-        // is this in the last question?
-        prepareUI();
     }
-    
-    private void prepareUI(){
+
+    private void prepareUI() {
         nomorSaatIni++;
         textareaPertanyaanSoal.setText("");
-        labelNomorSoal.setText("Nomor " + nomorSaatIni + " dari " + totalSoal + " Soal.");
+        labelNomorSoal.setText("Nomor " + nomorSaatIni + " dari " + data.getJumlah_pertanyaan() + " Soal.");
         tableRender.prepareEmptyQuestionData(tableJawabanPGSoal);
+
+        textareaPertanyaanSoal.requestFocus();
 
     }
 

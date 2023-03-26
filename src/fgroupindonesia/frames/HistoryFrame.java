@@ -6,6 +6,7 @@ import fgroupindonesia.frames.MainFrame;
 import fgroupindonesia.helper.DBConnection;
 import fgroupindonesia.helper.TableRenderer;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,9 +52,13 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
             list = db.select_history_all();
         }
 
-        tableRender = new TableRenderer();
+        if (tableRender == null) {
+            tableRender = new TableRenderer();
+        }
         tableRender.render_history(tableDataManagement, list);
         labelTotalData.setText("Total Data : " + list.size());
+
+        buttonReset.setEnabled(false);
 
     }
 
@@ -74,6 +79,7 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tableDataManagement = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
+        buttonReset = new javax.swing.JButton();
         buttonSearch = new javax.swing.JButton();
         buttonClearAll = new javax.swing.JButton();
         labelTotalData = new javax.swing.JLabel();
@@ -83,9 +89,9 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
             public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
-                formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -125,12 +131,31 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(403, 50));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        buttonReset.setText("Reset");
+        buttonReset.setEnabled(false);
+        buttonReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonResetActionPerformed(evt);
+            }
+        });
+        jPanel1.add(buttonReset);
+
         buttonSearch.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/search.png"))); // NOI18N
         buttonSearch.setText("Search");
+        buttonSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSearchActionPerformed(evt);
+            }
+        });
         jPanel1.add(buttonSearch);
 
         buttonClearAll.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/clear.png"))); // NOI18N
         buttonClearAll.setText("Clear All");
+        buttonClearAll.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearAllActionPerformed(evt);
+            }
+        });
         jPanel1.add(buttonClearAll);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -141,14 +166,59 @@ public class HistoryFrame extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
-        mframe.displayMenuManagement();
+    private void buttonClearAllActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearAllActionPerformed
+
+        int jawaban = JOptionPane.showConfirmDialog(null, "Yakin hapus semua data?");
+
+        if (jawaban == JOptionPane.YES_OPTION) {
+            db.delete_history_specific(dataUser.getUsername());
+            refresh();
+        }
+
+    }//GEN-LAST:event_buttonClearAllActionPerformed
+
+    private void buttonSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSearchActionPerformed
+
+        String kataDicari = JOptionPane.showInputDialog(null, "Mulai mencari data...", "tuliskan disini");
+
+        if (!kataDicari.isEmpty()) {
+            // mulai pencarian
+            db.connect();
+
+            list = db.select_history_specific(dataUser.getUsername(), kataDicari);
+
+            tableRender.render_history(tableDataManagement, list);
+            labelTotalData.setText("Total Data : " + list.size());
+
+            buttonReset.setEnabled(true);
+        }
+
+
+    }//GEN-LAST:event_buttonSearchActionPerformed
+
+    private void buttonResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonResetActionPerformed
+
+        refresh();
+
+
+    }//GEN-LAST:event_buttonResetActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+
         this.dispose();
-    }//GEN-LAST:event_formInternalFrameClosed
+        
+        if (dataUser.getJenis() != User.Type.kids) {
+            mframe.displayMenuManagement();
+        } else {
+            mframe.displayMenuActivity();
+        }
+
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonClearAll;
+    private javax.swing.JButton buttonReset;
     private javax.swing.JButton buttonSearch;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;

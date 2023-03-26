@@ -41,7 +41,7 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         buttonOpenRewards = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
-        jButton3 = new javax.swing.JButton();
+        buttonOpenAdditionalQuestion = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         buttonOpenHistory = new javax.swing.JButton();
@@ -54,6 +54,7 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
                 formInternalFrameClosed(evt);
             }
             public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
             }
             public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -110,8 +111,8 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         jLabel3.setText("Minta Soal Tambahan");
         jPanel3.add(jLabel3, java.awt.BorderLayout.PAGE_END);
 
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/write_add.png"))); // NOI18N
-        jPanel3.add(jButton3, java.awt.BorderLayout.CENTER);
+        buttonOpenAdditionalQuestion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/fgroupindonesia/images/write_add.png"))); // NOI18N
+        jPanel3.add(buttonOpenAdditionalQuestion, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(jPanel3);
 
@@ -138,7 +139,6 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosed(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosed
 
-        mframe.logout();
 
     }//GEN-LAST:event_formInternalFrameClosed
 
@@ -159,12 +159,16 @@ public class MenuActivityFrame extends javax.swing.JInternalFrame {
         mframe.displayStartQuestion();
     }//GEN-LAST:event_buttonOpenQuestionActionPerformed
 
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        mframe.logout();
+    }//GEN-LAST:event_formInternalFrameClosing
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton buttonOpenAdditionalQuestion;
     private javax.swing.JButton buttonOpenHistory;
     private javax.swing.JButton buttonOpenQuestion;
     private javax.swing.JButton buttonOpenRewards;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

@@ -48,6 +48,23 @@ public class MenuManagementFrame extends javax.swing.JInternalFrame {
         jLabel14 = new javax.swing.JLabel();
 
         setTitle("Menu Management");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
         getContentPane().setLayout(new java.awt.GridLayout(2, 3));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(20, 15, 20, 15));
@@ -165,21 +182,21 @@ public class MenuManagementFrame extends javax.swing.JInternalFrame {
 
         mframe.displayManagementStudent();
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonManagementStudentActionPerformed
 
     private void buttonManagementSoalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManagementSoalActionPerformed
 
         mframe.displayManagementQuestion();
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonManagementSoalActionPerformed
 
     private void buttonManagementJawabanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManagementJawabanActionPerformed
 
         mframe.displayManagementAnswerQuestion();
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonManagementJawabanActionPerformed
 
     private void buttonManagementKategoriActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManagementKategoriActionPerformed
@@ -192,15 +209,19 @@ public class MenuManagementFrame extends javax.swing.JInternalFrame {
 
         mframe.displayManagementRewards();
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonManagementImbalanActionPerformed
 
     private void buttonHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonHistoryActionPerformed
 
         mframe.displayHistory();
         this.dispose();
-        
+
     }//GEN-LAST:event_buttonHistoryActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        mframe.logout();
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
